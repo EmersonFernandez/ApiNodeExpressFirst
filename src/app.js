@@ -7,6 +7,7 @@ let port = 3000 || process.env.PORT;
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
+
 app.get('/', async (req,res) => {
     res.status(200).json(
         {
