@@ -4,8 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 function cargarRutas(app) {
-    const directorio = './routers'; // Directorio donde se encuentran tus archivos de ruta
-
+    const directorio = path.join(__dirname, 'routers');
     fs.readdir(directorio, (error, archivos) => {
         if (error) {
             console.error('Error al leer el directorio:', error);
