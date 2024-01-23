@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     }
     try {
         const pool = await getPool(data);
-        connEstablished = pool;
+        connEstablished = await pool;
         const result = await pool.query('SELECT * FROM tx_productos');
         res.json(result.rows);
     } catch (error) {
