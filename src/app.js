@@ -3,7 +3,7 @@ const app = express();
 // require('dotenv').config();
 
 // const cargarRutas = require('./routers/index');
-let port = 3000 || process.env.PORT;
+let port = 4500;
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
