@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const {conc} = require('./login');
+const getPool = require('../connention');
+// require('../connention');
+// const {connection} = require('./login');
 
 
 router.get('/', async (req, res) => {
     try {
 
-        const pool = await conc();
+        const pool = await getPool();
         const result = await pool.query('SELECT * FROM tx_productos');
 
         res.json({

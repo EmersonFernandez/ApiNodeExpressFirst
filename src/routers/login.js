@@ -1,42 +1,36 @@
 const express = require('express');
 const router = express.Router();
-let conc;
-let message;
-router.get('/', async (req, res) => {
-    
+const getPool = require('../connention');
+
+router.post('/', async (req, res) => {
+    const { user, pass } = req.body;
+    process.env.PASS =  'emerson';
+    process.env.USER =  '1234';
+    // process.env.PASS =  pass;
+    // process.env.USER =  user;
+
     try {
-        data = {
-            user:'postgres',
-            pass:'1234'
-        }
-        const getPool = require('../connention'); 
-        const pool = getPool(data);
-        conc = () => {
-            pool.then(data => {
-                if(data.message){
-                    message = data.message;
-                    return data.message;
-                }else{
-                    message = 'Credeciales Correctas';
-                }
-            });
+        const pool = await getPool();
+        pool.query('SELECT 1', (err, result) => {
+            if (err) {
+                console.log('Error al conectar a la base de datos:', err);
+                res.json({
+                    error :'Ocurrio un error',
+                    message:err.message
+                });
+            } else {
+                console.log('Conexión exitosa a la base de datos');
+                res.json({
+                    message:'Credenciales correctas'
+                });
 
-            return pool;
-        };
-        await conc();
-        //const result =  pool.query('SELECT * FROM tx_productos');
-       // res.json(result.rows);
-        res.json({
-            inf:message
+            }
         });
-
+        
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor', erroMesagge: error.message });
     }
 });
 
-
-
-
-module.exports = { router, conc };
+module.exports = { router };
