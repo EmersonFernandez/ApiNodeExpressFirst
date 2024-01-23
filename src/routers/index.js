@@ -14,7 +14,7 @@ function cargarRutas(app) {
             const rutaArchivo = path.join(directorio, nombreArchivo);
             const nombreRouter = nombreArchivo.substring(0, nombreArchivo.indexOf('.'));
             if (nombreRouter !== 'index' && nombreArchivo.endsWith('.js')) {
-                const router = require(`${rutaArchivo}`);
+                const {router} = require(`${rutaArchivo}`);
                 app.use(`/api/${nombreRouter}`, router);
             }
         });
