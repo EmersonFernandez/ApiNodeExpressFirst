@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const {pool} = require('./login');
 
 router.get('/', async (req, res) => {
     try {
+        const poolC = await pool;
+        const result = await pool.query('SELECT * FROM tx_productos');
+
         res.json({
             status:200,
             des:'ruta de productos',
-            message:'this is OK'
+            message:'this is OK',
+            data : result.rows
         });
-        // const pool = await getPool(req.body); // Obtener el pool antes de ejecutar la consulta
-        // const result = await pool.query('SELECT * FROM tx_productos');
-        // res.json(result.rows);
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
