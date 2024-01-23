@@ -1,10 +1,12 @@
 
 
+const { log } = require('console');
 const fs = require('fs');
 const path = require('path');
 
 function cargarRutas(app) {
-    const directorio = path.join(__dirname, 'routers');
+    const directorio = './routers';
+    console.log("este es el Dirrectorio: >>>>>  " ,directorio);
     fs.readdir(directorio, (error, archivos) => {
         if (error) {
             console.error('Error al leer el directorio:', error);
