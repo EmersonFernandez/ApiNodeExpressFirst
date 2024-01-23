@@ -5,13 +5,13 @@ let message;
 router.get('/', async (req, res) => {
     
     try {
+        data = {
+            user:'postgres',
+            pass:'1234'
+        }
+        const getPool = require('../connention'); 
+        const pool = getPool(data);
         conc = () => {
-            data = {
-                user:'postgres',
-                pass:'1234'
-            }
-            const getPool = require('../connention'); 
-            const pool = getPool(data);
             pool.then(data => {
                 if(data.message){
                     message = data.message;
