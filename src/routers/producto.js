@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
         });
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
-        res.status(500).json({ error: 'Error interno del servidor' , message:error.message});
+        res.status(500).json({ error: 'Error interno del servidor -->' , message:error.message});
     }
 });
 
