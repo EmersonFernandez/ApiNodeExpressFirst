@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-// require('dotenv').config();
+require('dotenv').config();
 
-// const cargarRutas = require('./routers/index');
+const cargarRutas = require('./routers/index');
 let port = 3000 || process.env.PORT;
 
 app.use(express.urlencoded({extended:false}));
@@ -18,7 +18,7 @@ app.get('/', async (req,res) => {
         }
     );
 });
-// cargarRutas(app);
+cargarRutas(app);
 
 app.listen(port, () => {
     console.log(` http://localhost:${port}/`);
