@@ -18,7 +18,7 @@ app.get('/api', async (req,res) => {
         }
     );
 });
-cargarRutas(app);
+// cargarRutas(app);
 
 app.listen(port, () => {
     console.log(` http://localhost:${port}/`);
