@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const getPool = require('../connention'); 
-
 let conc;
 let message;
 router.get('/', async (req, res) => {
-    data = {
-        user:'postgres',
-        pass:'1234'
-    }
-
+    
     try {
         conc = () => {
-            const pool =  getPool(data);
+            data = {
+                user:'postgres',
+                pass:'1234'
+            }
+            const getPool = require('../connention'); 
+            const pool = getPool(data);
             pool.then(data => {
                 if(data.message){
                     message = data.message;
@@ -30,7 +29,7 @@ router.get('/', async (req, res) => {
         res.json({
             inf:message
         });
-        
+
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
