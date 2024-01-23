@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const getPool = require('../connention'); // Importar la configuración de la conexión
+const getPool = require('../connention'); 
+
+let connEstablished;
 
 router.post('/', async (req, res) => {
     try {
-        const pool = await getPool(req.body); // Obtener el pool antes de ejecutar la consulta
+        const pool = await getPool(req.body);
+        connEstablished = pool;
         const result = await pool.query('SELECT * FROM tx_productos');
         res.json(result.rows);
     } catch (error) {
@@ -12,6 +15,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
+
 router.get('/', async (req, res) => {
     try {
         res.json({
@@ -27,4 +31,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-module.exports = router;
+
+module.exports = {
+    router,
+    pool
+};
