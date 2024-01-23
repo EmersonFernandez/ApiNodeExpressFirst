@@ -5,8 +5,12 @@ const getPool = require('../connention');
 let connEstablished;
 
 router.post('/', async (req, res) => {
+    data = {
+        user:'postgres',
+        pass:'1234'
+    }
     try {
-        const pool = await getPool(req.body);
+        const pool = await getPool(data);
         connEstablished = pool;
         const result = await pool.query('SELECT * FROM tx_productos');
         res.json(result.rows);
