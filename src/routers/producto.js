@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {pool} = require('./login');
+const {connEstablished} = require('./login');
 
 router.get('/', async (req, res) => {
     try {
-        const poolC = await pool;
-        const result = await poolC.query('SELECT * FROM tx_productos');
+        const pool = await connEstablished;
+        const result = await pool.query('SELECT * FROM tx_productos');
 
         res.json({
             status:200,

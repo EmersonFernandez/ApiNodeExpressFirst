@@ -23,4 +23,4 @@ router.get('/', async (req, res) => {
 
 
 
-module.exports = { router, pool: connEstablished };
+module.exports = { router, connEstablished };
