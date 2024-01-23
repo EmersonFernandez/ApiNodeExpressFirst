@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const getPool = require('../connention');
 
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
     const { user, pass } = req.body;
     process.env.PASS =  'emerson';
     process.env.USER =  '1234';
