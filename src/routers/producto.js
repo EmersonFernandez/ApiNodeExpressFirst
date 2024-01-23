@@ -5,7 +5,7 @@ const {pool} = require('./login');
 router.get('/', async (req, res) => {
     try {
         const poolC = await pool;
-        const result = await pool.query('SELECT * FROM tx_productos');
+        const result = await poolC.query('SELECT * FROM tx_productos');
 
         res.json({
             status:200,
