@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 function cargarRutas(app) {
-    const directorio = '.\\routers';
+    const directorio = __dirname;
     console.log("este es el Dirrectorio: >>>>>  " ,directorio);
     fs.readdir(directorio, (error, archivos) => {
         if (error) {
