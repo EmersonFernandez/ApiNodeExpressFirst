@@ -12,7 +12,7 @@ function getPool() {
             // password: dataUser.pass,
             port: process.env.PGPORT || 22927,
         });
-
+        console.log(process.env.USER);
         // // Realizar una operación de prueba (por ejemplo, una simple consulta)
         // pool.query('SELECT 1', (err, result) => {
         //     if (err) {
