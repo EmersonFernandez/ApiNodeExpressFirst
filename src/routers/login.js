@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getPool = require('../connention');
+const jwt = require('jsonwebtoken');
 
 router.get('/', async (req, res) => {
     const { user, pass } = req.body;
@@ -20,8 +21,10 @@ router.get('/', async (req, res) => {
                 });
             } else {
                 console.log('Conexión exitosa a la base de datos');
+                const token = generateToken(req.body);
                 res.json({
-                    message:'Credenciales correctas'
+                    message:'Credenciales correctas',
+                    token
                 });
 
             }
@@ -32,5 +35,16 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor', erroMesagge: error.message });
     }
 });
+
+const claveSecreta = process.env.SECRET_SENTENCE;
+function generateToken(user){
+    const dataUSer = {
+        user : user.user,
+
+    };
+
+    const token = jwt.sign(dataUSer,claveSecreta,{expiresIn:'1h'});
+    return token;
+}
 
 module.exports = { router };
