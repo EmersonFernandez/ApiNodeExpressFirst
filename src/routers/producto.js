@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const getPool = require('../connention');
-const { closeConnection } = require('../fuctiones');
+const { closeConnection,validarToken } = require('../fuctiones');
 // require('dotenv').config();
 // require('../connention');
 // const {connection} = require('./login');
 
 
-router.get('/', async (req, res) => {
+router.get('/', validarToken ,async (req, res) => {
     try {
 
         const token = req.cookies.token;
