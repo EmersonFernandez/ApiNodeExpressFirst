@@ -11,9 +11,9 @@ router.get('/', async (req, res) => {
 
         const token = req.cookies.token;
 
-        if (!token) {
-            return res.status(401).json({ error: 'No hay token, acceso no autorizado' });
-        }
+        // if (!token) {
+        //     return res.status(401).json({ error: 'No hay token, acceso no autorizado' });
+        // }
 
         const pool = await getPool();
         const result = await pool.query('SELECT * FROM tx_productos');
