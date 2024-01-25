@@ -45,7 +45,8 @@ router.get('/', async (req, res) => {
                     });
 
                 const token = generateToken(users);
-                res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' });
+                // httpOnly: true,
+                res.cookie('token', token, {secure: true, sameSite: 'none' });
                 process.env.TOKEN = token;
                 res.header('Authorization', `Bearer ${token}`);
                 res.json({
