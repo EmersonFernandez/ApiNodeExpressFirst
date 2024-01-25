@@ -13,7 +13,11 @@ router.get('/', validarToken ,async (req, res) => {
         const token = req.cookies.token;
 
         if (!token) {
-            return res.status(401).json({ error: 'No hay token, acceso no autorizado' });
+            return res.status(401).json(
+                {
+                    error:true,
+                    errorMessage: 'No hay token, acceso no autorizado' }
+                );
         }
 
         const pool = await getPool();
