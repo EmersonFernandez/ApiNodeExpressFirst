@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const cargarRutas = require('./routers/index');
 let port = 3000 || process.env.PORT;
-app.use(cors({ origin: 'http://localhost:5173/', credentials: true }));
+app.use(cors());
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(cookieParser());
