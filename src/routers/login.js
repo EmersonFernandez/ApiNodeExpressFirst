@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
                 process.env.TOKEN = token;
                 res.header('Authorization', `Bearer ${token}`);
                 res.json({
-                    message:'Credenciales correctas',
+                    message:'Credenciales correctas ',
                     token
                 });
             }
