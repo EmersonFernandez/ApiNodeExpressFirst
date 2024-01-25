@@ -3,11 +3,12 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const cors = require('cors')
 require('dotenv').config();
-
 const cargarRutas = require('./routers/index');
+
 let port = 3000 || process.env.PORT;
+
 const corsOptions = {
-    origin: 'http://localhost:5173',  // Reemplaza con el puerto correcto si es diferente
+    origin: 'http://localhost:5173', 
     credentials: true,
 };
 
@@ -50,6 +51,8 @@ app.get('/', async (req,res) => {
         }
     );
 });
+
+
 app.get('/api', async (req,res) => {
     res.send(
         `<form action="/api/login" method="post">
@@ -59,6 +62,7 @@ app.get('/api', async (req,res) => {
     </form>`
     );
 });
+
 cargarRutas(app);
 
 app.listen(port, () => {

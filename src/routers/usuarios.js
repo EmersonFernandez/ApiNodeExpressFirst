@@ -20,22 +20,29 @@ router.get('/', validarToken,async (req, res) => {
 
             res.json({
                 status:200,
+                error:false,
                 des:'ruta de productos',
                 message:'this is OK',
-                data : result.rows
+                results : result.rows
             });
         }else{
             res.json({
                 status:400,
+                error:false,
                 des:'ruta de productos',
                 message:'No tiene persimos para ver esta vista',
-                data : null
+                results : null
             })
         }
         
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
-        res.status(500).json({ error: 'Error interno del servidor -->' , message:error.message});
+        res.json({ 
+            status:500,
+            error:true,
+            errorDes: 'Error interno del servidor', 
+            erroMesagge: error.message 
+        });
     }
 });
 

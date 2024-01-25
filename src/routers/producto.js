@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getPool = require('../connention');
+const { closeConnection } = require('../fuctiones');
 // require('dotenv').config();
 // require('../connention');
 // const {connection} = require('./login');
@@ -21,23 +22,23 @@ router.get('/', async (req, res) => {
 
 
         res.json({
-            status:200,
-            des:'ruta de productos',
-            message:'this is OK',
-            data : result.rows
+            status: 200,
+            error: false,
+            des: 'ruta de productos',
+            message: 'this is OK',
+            results : result.rows
         });
 
-        pool.end(err => {
-            if (err) {
-                console.error('Error al cerrar la conexión:', err);
-            } else {
-                console.log('Conexión cerrada correctamente');
-            }
-            });
+        closeConnection(pool,res);
 
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
-        res.json({ error: 'Error interno del servidor -->' , message:error.message});
+        res.json({ 
+            status:500,
+            error:true,
+            errorDes: 'Error interno del servidor', 
+            erroMesagge: error.message 
+        });
     }
 });
 

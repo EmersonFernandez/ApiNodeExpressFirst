@@ -11,9 +11,11 @@ router.get('/', validarToken, (req, res) => {
     }
 
     res.json({ 
+            status: 200,
+            error: false,
             mensaje: 'Acceso autorizado',
-            data:req.results,
-            token:req.token
+            results: req.results,
+            token: req.token
             });
 });
 
