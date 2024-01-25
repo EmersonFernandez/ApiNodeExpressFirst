@@ -4,10 +4,10 @@ const getPool = require('../connention');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
     const { user, pass } = req.body;
-    process.env.PASS =  pass;
-    process.env.USER =  user;
+    process.env.PASS =  '1234';
+    process.env.USER =  'emerson';
     console.log(user);
     const users = {}
     // process.env.PASS =  pass;
