@@ -17,6 +17,7 @@ router.get('/', validarToken ,async (req, res) => {
                 {
                     error:true,
                     errorMessage: 'No hay token, acceso no autorizado' }
+                    
                 );
         }
 
