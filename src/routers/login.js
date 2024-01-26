@@ -8,8 +8,8 @@ require('dotenv').config();
 router.get('/', async (req, res) => {
 
     const { user, pass } = req.body;
-    process.env.PASS =  '1234';
-    process.env.USER =  'emerson';
+    process.env.PASS =  pass;
+    process.env.USER =  user;
     const users = {}
 
     try {
