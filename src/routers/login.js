@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const {closeConnection} = require('../fuctiones');
 require('dotenv').config();
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
 
     const { user, pass } = req.body;
     process.env.PASS =  pass;
