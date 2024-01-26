@@ -31,7 +31,7 @@ router.get('/', validarToken ,async (req, res) => {
             error: false,
             des: 'ruta de productos',
             message: 'this is OK',
-            token:req.token,
+            token:req.results,
             results : result.rows
         });
 
