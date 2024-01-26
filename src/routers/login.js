@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
                 process.env.TOKEN = token;
 
                 res.json({
-                    status:400,
+                    status:200,
                     error:false,
                     message:'Credenciales correctas',
                     token
@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
         res.json({ 
-            status:500,
+            status:400,
             error:true,
             errorDes: 'Error interno del servidor', 
             erroMesagge: error.message 
