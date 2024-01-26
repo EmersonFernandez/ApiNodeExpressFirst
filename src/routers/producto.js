@@ -43,7 +43,7 @@ router.get('/', validarToken ,async (req, res) => {
             status:500,
             error:true,
             errorDes: 'Error interno del servidor', 
-            erroMesagge: error.message 
+            errorMessage: error.message 
         });
     }
 });
