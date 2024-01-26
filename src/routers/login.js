@@ -51,6 +51,7 @@ router.post('/', async (req, res) => {
                 process.env.TOKEN = token;
 
                 res.json({
+                    status:400,
                     error:false,
                     message:'Credenciales correctas',
                     token
