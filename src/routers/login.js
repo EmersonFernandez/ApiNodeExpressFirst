@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
     try {
         const pool = await getPool();
         pool.query('SELECT 1', async (err, result) => {
-        res.clearCookie('token', { secure: true, sameSite: 'none' });
+        // res.clearCookie('token', { secure: true, sameSite: 'none' });
             if (err) {
                 console.log('Error al conectar a la base de datos:', err);
                 res.json({
