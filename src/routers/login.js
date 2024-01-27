@@ -54,7 +54,9 @@ router.post('/', async (req, res) => {
                     status:200,
                     error:false,
                     message:'Credenciales correctas',
-                    token
+                    token,
+                    user:users.user,
+                    rol:users.rol
                 });
             }
         });
