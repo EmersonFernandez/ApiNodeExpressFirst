@@ -57,7 +57,8 @@ router.post('/', async (req, res) => {
                     message:'Credenciales correctas',
                     token,
                     user:users.user,
-                    rol:users.rol
+                    rol:users.rol,
+                    privilegio: users.privilegio
                 });
             }
         });
