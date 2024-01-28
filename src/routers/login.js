@@ -47,7 +47,10 @@ router.post('/', async (req, res) => {
                 closeConnection(pool,res);
                 const token = generateToken(users);
 
-                // httpOnly: true,
+
+
+
+                // httpOnly: true   ,
                 res.cookie('token', token, {secure: true, sameSite: 'none' });
                 process.env.TOKEN = token;
 
