@@ -29,10 +29,11 @@ router.post('/', async (req, res) => {
                 console.log('Conexión exitosa a la base de datos');
 
                 try {
-                    const result = await pool.query('SELECT VDOCUMENTO, USUARIO, NROL FROM USUARIOS WHERE USUARIO = $1', [process.env.USER]);
+                    const result = await pool.query('SELECT VDOCUMENTO, USUARIO, NROL, NPRIVILEGIO FROM USUARIOS WHERE USUARIO = $1', [process.env.USER]);
                     users.user = result.rows[0].usuario;
                     users.documento = result.rows[0].vdocumento;
                     users.rol = result.rows[0].nrol;
+                    users.privilegio = result.rows[0].nprivilegio;
 
                 } catch (error) {
                     console.error('Error en la consulta:', error);
