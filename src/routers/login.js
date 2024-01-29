@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 
 
                 // httpOnly: true   ,
-                res.cookie('token', token, {secure: true, sameSite: 'none' });
+                res.cookie('token', token);
                 process.env.TOKEN = token;
 
                 res.json({
