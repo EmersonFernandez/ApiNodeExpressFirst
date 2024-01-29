@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const getPool = require('../connention');
 const jwt = require('jsonwebtoken');
-const {closeConnection} = require('../fuctiones');
+const {closeConnection} = require('../funciones');
 require('dotenv').config();
 
 router.post('/', async (req, res) => {

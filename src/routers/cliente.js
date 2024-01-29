@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {validarToken} = require('../fuctiones');
+const {validarToken} = require('../funciones');
 
 // Ruta protegida que utiliza el middleware de validación
 router.get('/', validarToken, (req, res) => {

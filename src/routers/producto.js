@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const getPool = require('../connention');
-const { closeConnection, validarToken } = require('../fuctiones');
+const { closeConnection, validarToken } = require('../funciones');
 
 
 
