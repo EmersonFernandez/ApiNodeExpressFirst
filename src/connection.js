@@ -1,3 +1,4 @@
+// conexion con la base de dato de en la nube "postgres"
 const { Pool } = require('pg');
 require('dotenv').config();
 

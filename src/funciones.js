@@ -1,3 +1,4 @@
+// este es un archivo de funciones que se estan utlizando en todo la api
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -50,6 +51,7 @@ const closeConnection = (pool,res) =>{
 }
 
 
+// la exportamos
 module.exports = {
     validarToken,
     closeConnection

@@ -1,3 +1,4 @@
+// este archivo es el encargado de la creacion de la ruta de una forma más dinamica
 const fs = require('fs');
 const path = require('path');
 
@@ -21,4 +22,5 @@ function cargarRutas(app) {
     });
 }
 
+// la exportamos
 module.exports = cargarRutas;

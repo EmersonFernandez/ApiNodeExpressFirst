@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const getPool = require('../connention');
+const getPool = require('../connection');
 const jwt = require('jsonwebtoken');
 const {closeConnection} = require('../funciones');
 require('dotenv').config();
