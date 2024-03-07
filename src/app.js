@@ -114,7 +114,7 @@ app.get('/api', async (req,res) => {
         <form action="/api/login" method="post">
         <label for="">Usuario</label><input type="text" name="user"><br>
         <label for="">Contraseña</label><input type="password" name="pass"><br>
-        <button type="submit">Enviar</button>
+        <button type="submit">Enviar --- >>></button>
     </form>`
     );
 });
