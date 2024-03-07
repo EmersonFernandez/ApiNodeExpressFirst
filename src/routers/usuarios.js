@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const getPool = require('../connection');
 const { validarToken, closeConnection } = require('../funciones');
-const { Await } = require('react-router-dom');
-
 
 // mostrar lo usuarios registrados
 router.get('/', validarToken, async (req, res) => {
