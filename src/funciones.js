@@ -7,6 +7,8 @@ require('dotenv').config();
 function validarToken(req,res,next){
     req.headers['authorization'] = req.cookies.token;
     const accessToken = req.headers['authorization'] || req.query.accessToken || req.cookies.token;
+    console.log(req.headers['authorization']);
+
     if (!accessToken) {
         return res.json({
             status:401,

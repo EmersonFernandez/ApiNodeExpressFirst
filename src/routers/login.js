@@ -47,8 +47,7 @@ router.post('/', async (req, res) => {
                 const token = generateToken(users);
 
                 res.cookie('token', token, {secure: true, sameSite: 'none' });
-                process.env.TOKEN = token;
-
+                
                 res.json({
                     status:200,
                     error:false,
