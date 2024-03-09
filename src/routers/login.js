@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
                 const token = generateToken(users);
 
                 res.cookie('token', token, {secure: true, sameSite: 'none' });
-                
+
                 res.json({
                     status:200,
                     error:false,
@@ -73,7 +73,7 @@ router.post('/', async (req, res) => {
 
 process.env.SECRET_SENTENCE = '0101452';
 function generateToken(user){
-    const token = jwt.sign(user,process.env.SECRET_SENTENCE,{expiresIn:'20m'});
+    const token = jwt.sign(user,process.env.SECRET_SENTENCE,{expiresIn:'3m'});
     return token;
 }
 
