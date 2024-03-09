@@ -11,24 +11,24 @@ let port = 3000 || process.env.PORT;
 
 // hacemos uso del cors
 const corsOptions = {
-    origin: 'http://localhost:5173', 
+    origin: 'http://localhost:5173',
     credentials: true,
 };
 
 
 // hacemos uso de use 
 app.use(cors(corsOptions));
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
 // ruta de la información de la api
-app.get('/', async (req,res) => {
+app.get('/', async (req, res) => {
     res.status(200).json(
         {
-            status:200,
-            created:'Emerson David Fernandez',
-            version:'V1',
+            status: 200,
+            created: 'Emerson David Fernandez',
+            version: 'V1',
             descriptions: {
                 descriptionOne: 'Esta es una api que esta conectada a una base de dato en la nube de "Postgres"',
                 descriptionTwo: 'Tiene una autenticación con la biblioteca de seguridad JSON Web Token. Con esto validamos al usuario que se conecta y permitimos la sesión en varias rutas, además de no permitir el acceso sin iniciar sesión.'
@@ -37,43 +37,95 @@ app.get('/', async (req,res) => {
             what_can_be_done: {
                 one: 'Se puede visualizar los productos registrados, crear, actulizar e eliminar',
                 two: 'Se puede visualizar los usuario, crear , actuliazar , eliminar y dar permisos o privilegios a los usuario creados'
-                
+
             }
-            ,
-            rutas: [
-                {   
-                    id:1,
-                    description : 'login para entrar a la api',
-                    urlApi : 'http://localhost:3000/api/'
-                },
-                {
-                    id:2,
-                    description : 'rutas de los productos',
-                    urlApi : 'http://localhost:3000/api/producto'
-                },
-                {
-                    id:3,
-                    description : 'rutas de los clientes',
-                    urlApi : 'http://localhost:3000/api/cliente'
-                },
-                {
-                    id:4,
-                    description : 'rutas de los usuarios',
-                    urlApi : 'http://localhost:3000/api/usuarios'
-                }
-            ]
+        //     ,
+        //     rutas: [
+        //         {
+        //             id: 1,
+        //             description: 'login para entrar a la api',
+        //             urlApi: 'http://localhost:3000/api/'
+        //         },
+        //         {
+        //             id: 2,
+        //             description: 'rutas de los productos',
+        //             urlApi: 'http://localhost:3000/api/producto'
+        //         },
+        //         {
+        //             id: 3,
+        //             description: 'rutas de los clientes',
+        //             urlApi: 'http://localhost:3000/api/cliente'
+        //         },
+        //         {
+        //             id: 4,
+        //             description: 'rutas de los usuarios',
+        //             urlApi: 'http://localhost:3000/api/usuarios'
+        //         }
+        //     ]
         }
     );
 });
 
-
-// forulario de logueo
-app.get('/api', async (req,res) => {
+// formulario de regsitro de usuarios
+app.get('/formusuario', (req, res) => {
     res.send(
-        
+        `
+        <p>Registro de Usuarios</p>
+<form action="./api/usuarios" method="post">
+    <div>
+        <label for="">Nombres</label>
+        <input type="text" name="nombres">
+    </div>
+    <div>
+        <label for="">Apellidos</label>
+        <input type="text" name="apellidos">
+    </div>
+    <div>
+        <label for="">Teléfono</label>
+        <input type="number" name="telefono">
+    </div>
+    <div>
+        <label for="">Número Documento</label>
+        <input type="number" name="documento">
+    </div>
+    <div>
+        <label for="">Usuario</label>
+        <input type="text" name="usuario">
+    </div>
+    <div>
+        <label for="">Contraseña</label>
+        <input type="pas" name="pass">
+    </div>
+    <div>
+        <select name="privilegio">
+            <option disabled ><<< --- seleccione un rol --- >>> </option>
+            <option value="1">Administrador</option>
+            <option value="2">Cliente</option>
+            <option value="3">Vendedor</option>
+            <option value="4">Supervisor</option>
+        </select>
+    </div>
+    <div>
+        <select name="rol">
+            <option disabled ><<< --- seleccione un rol --- >>> </option>
+            <option value="1">Modo Administrador</option>
+            <option value="2">Modo Lectura</option>
+            <option value="3">Crear y Editar</option>
+            <option value="4">Solo Eliminar</option>
+        </select>
+    </div>
+    <button type="submit">  <<< --- Crear --- >>></button>
+</form>
+        `
+    );
+});
+
+// formulario de logueo
+app.get('/api', async (req, res) => {
+    res.send(
         `
         <div>
-            <p>Usuario de pruebas<p>
+            <p>Usuarios de pruebas<p>
             <table border="1px">
             <thead>
                 <tr>
@@ -114,7 +166,7 @@ app.get('/api', async (req,res) => {
         <form action="/api/login" method="post">
         <label for="">Usuario</label><input type="text" name="user"><br>
         <label for="">Contraseña</label><input type="password" name="pass"><br>
-        <button type="submit">Enviar --- >>></button>
+        <button type="submit"> <<< --- Enviar --- >>></button>
     </form>`
     );
 });
