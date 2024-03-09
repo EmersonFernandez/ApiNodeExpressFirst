@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
     try {
         const pool = await getPool();
         pool.query('SELECT 1', async (err, result) => {
-        // res.clearCookie('token', { secure: true, sameSite: 'none' });
+
             if (err) {
                 console.log('Error al conectar a la base de datos:', err);
                 res.json({
@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
 
             } else {
                 console.log('Conexión exitosa a la base de datos');
-
                 try {
                     const result = await pool.query('SELECT VDOCUMENTO, USUARIO, NROL, NPRIVILEGIO FROM USUARIOS WHERE USUARIO = $1', [process.env.USER]);
                     users.user = result.rows[0].usuario;
@@ -47,10 +46,6 @@ router.post('/', async (req, res) => {
                 closeConnection(pool,res);
                 const token = generateToken(users);
 
-
-
-
-                // httpOnly: true   ,
                 res.cookie('token', token, {secure: true, sameSite: 'none' });
                 process.env.TOKEN = token;
 
@@ -79,7 +74,7 @@ router.post('/', async (req, res) => {
 
 process.env.SECRET_SENTENCE = '0101452';
 function generateToken(user){
-    const token = jwt.sign(user,process.env.SECRET_SENTENCE,{expiresIn:'5m'});
+    const token = jwt.sign(user,process.env.SECRET_SENTENCE,{expiresIn:'20m'});
     return token;
 }
 
