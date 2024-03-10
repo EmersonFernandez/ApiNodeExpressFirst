@@ -17,7 +17,7 @@ async function getsUsers(req,res){
             res.json({
                 status: 200,
                 error: false,
-                des: 'ruta de productos',
+                des: 'ruta de usuarios',
                 message: 'this is OK',
                 results: result.rows
             });
@@ -25,7 +25,7 @@ async function getsUsers(req,res){
             res.json({
                 status: 400,
                 error: false,
-                des: 'ruta de productos',
+                des: 'ruta de usuarios',
                 message: 'No tiene permisos para ver esta vista',
                 results: null
             })
