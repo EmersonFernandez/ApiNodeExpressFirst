@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alerta SweetAlert2 Personalizada</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* Personaliza el tamaño de la alerta */
+        .swal2-popup {
+            font-size: 1rem;
+            /* Cambia el tamaño de la fuente */
+            width: auto;
+            /* Ajusta el ancho al contenido o establece un ancho específico */
+            height: auto;
+            /* Ajusta la altura al contenido o establece una altura específica */
+        }
+    </style>
+</head>
+
+<body>
+
+    <button onclick="mostrarAlerta()">Mostrar Alerta Pequeña</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function mostrarAlerta() {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Acción completada!',
+                text: 'El formulario ha sido enviado correctamente.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000 // Duración en milisegundos
+            });
+
+        }
+    </script>
+</body>
+
+</html>

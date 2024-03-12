@@ -9,7 +9,7 @@ router.get('/', validarToken,async (req, res) => {
 
         const token = req.cookies.token;
 
-        if (!token) {
+        if (!token) {zl
             return res.json({ error: 'No hay token, acceso no autorizado' });
         }
 
