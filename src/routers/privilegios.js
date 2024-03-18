@@ -21,14 +21,24 @@ router.get('/', validarToken , async (req, res) => {
 
         const pool = await getPool();
         const result = await pool.query(`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`);
+        if (Number(req.results.rol) === 1) {
             res.json({
                 status: 200,
                 error: false,
-                des: 'ruta de productos',
+                des: 'ruta de privilegios',
                 message: 'this is OK',
                 token: req.results,
                 results: result.rows
             });
+        } else {
+            res.json({
+                status: 400,
+                error: false,
+                des: 'ruta de privilegios',
+                message: 'No tiene permisos para ver esta vista',
+                results: null
+            })
+        }
 
         closeConnection(pool, res);
     } catch (error) {
