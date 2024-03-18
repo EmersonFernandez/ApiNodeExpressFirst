@@ -6,7 +6,6 @@ const multer = require('multer');
 const fs = require('fs');
 const getPool = require('../connection');
 const { closeConnection } = require('../funciones');
-const { log } = require('console');
 
 const upload = multer({ dest: 'uploads/' });
 

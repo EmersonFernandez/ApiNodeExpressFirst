@@ -1,9 +1,9 @@
-// este es el archivo del controlador de los usuarios
+// controlador de los usuarios
 const getPool = require('../connection');
 const { closeConnection } = require('../funciones');
 
-// obtenemos todo los usuarios registrados 
-async function getsUsers(req,res){
+// mostrar todos los usuaios
+async function getsUsers(req, res) {
     try {
 
         const token = req.cookies.token;
@@ -44,8 +44,8 @@ async function getsUsers(req,res){
     }
 };
 
-// funcion que va realizar la creacion de usuarios
-async function addUsers(req,res){
+// creacion de los usuarios -- se puede mejorar
+async function addUsers(req, res) {
     try {
         // validacion del token 
         const token = req.cookies.token;
@@ -55,6 +55,8 @@ async function addUsers(req,res){
 
         // obtemos las campos donde se llena la informacion
         const { nombres, apellidos, telefono, documento, rol, usuario, privilegio, pass } = req.body;
+        const userCreator = req.results.user;
+        const changePassword = true;
 
         // Validate input
         // if (!nombres || !apellidos || !telefono || !documento || !rol || !usuario || !privilegio || !pass) {
@@ -70,6 +72,11 @@ async function addUsers(req,res){
             const resultseq = await pool.query('SELECT MAX(NCODIGO) + 1 seq FROM USUARIOS');
             const seq = resultseq.rows[0].seq;
 
+            // // Obtener la fecha actual
+            // const fechaActual = new Date();
+            // // Formatear la fecha como yyyy-mm-dd para PostgreSQL
+            // const fechaFormateada = fechaActual.toISOString().split('T')[0];
+
             // consulta para validar el usuarios que vamos a registrar existe en la base de dato
             const existsUser = await pool.query(`select count(1) usersexit from usuarios where usuario = '${usuario}' or vtelefono = '${telefono}' or vdocumento = '${documento}'`);
 
@@ -77,8 +84,8 @@ async function addUsers(req,res){
             console.log(existsUser.rows[0].usersexit);
             if (Number(existsUser.rows[0].usersexit) == 0) {
                 // hacemos la insercion a la tabla 
-                const queryInsertUser = 'INSERT INTO USUARIOS (NCODIGO,VNOMBRE,VAPELLIDO,VTELEFONO,VDOCUMENTO,NROL,USUARIO,NPRIVILEGIO) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)';
-                const result = await pool.query(queryInsertUser, [seq, nombres, apellidos, telefono, documento, rol, usuario, privilegio]);
+                const queryInsertUser = 'INSERT INTO USUARIOS (NCODIGO,VNOMBRE,VAPELLIDO,VTELEFONO,VDOCUMENTO,NROL,USUARIO,NPRIVILEGIO,VUSERCREATOR,BCHANGEPASSWORD) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
+                const result = await pool.query(queryInsertUser, [seq, nombres, apellidos, telefono, documento, rol, usuario, privilegio, userCreator, changePassword]);
 
                 // hacemos una consultas a la tabla privilegio 
                 const namePrivilegios = await pool.query('select descripcion from privilegios');

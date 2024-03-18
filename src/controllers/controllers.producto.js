@@ -1,9 +1,9 @@
-// este es el archivo del controlador de los productos
+// controlador de los productos
 const getPool = require('../connection');
 const { closeConnection } = require('../funciones');
 
 
-// esta funcion es para obtener todos los productos registrados
+// mostrar todos los productos
 async function getsProducts (req,res) {
     try {
         const token = req.cookies.token;
@@ -37,7 +37,7 @@ async function getsProducts (req,res) {
     }
 }
 
-// esta funcion es para hacer el regsitro de un nuevo producto
+// añadir productos
 async function addProducts (req,res) {
     try {
         const token = req.cookies.token;
@@ -84,7 +84,7 @@ async function addProducts (req,res) {
     }
 }
 
-// este fucion es para actualizar los produstos
+// actualizar productos
 async function updateProducts (req,res){
     try{
         const token = req.cookies.token;
@@ -128,7 +128,7 @@ async function updateProducts (req,res){
     }
 }
 
-// esta funcion es para elimiar un producto 
+// eliminar producto
 async function deleteProduct(req,res){
     try {
         const id = req.params.id;
@@ -165,7 +165,7 @@ async function deleteProduct(req,res){
     }
 }
 
-// esta funcion muestra un producto en especifico
+// mostra un producto especifico
 async function getProduct (req,res){
     try {
         const token = req.cookies.token;

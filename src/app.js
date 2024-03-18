@@ -1,4 +1,4 @@
-// este es el archivo principal 
+// app
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const app = express();
@@ -6,32 +6,32 @@ const cors = require('cors')
 require('dotenv').config();
 const cargarRutas = require('./routers/index');
 
-// este es el puerto
+// puerto
 let port = 3000 || process.env.PORT;
 
-// hacemos uso del cors
+// cors opciones
 const corsOptions = {
     origin: 'http://localhost:5173',
     credentials: true,
 };
 
 
-// hacemos uso de use 
+// Middleware Configuration
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
-// ruta de la información de la api
+// ruta principal de api
 app.get('/', async (req, res) => {
     res.status(200).json(
         {
             status: 200,
-            created: 'Emerson David Fernandez',
+            created: 'Emerson David Fernandez regino',
             version: 'V1',
             descriptions: {
                 descriptionOne: 'Esta es una api que esta conectada a una base de dato en la nube de "Postgres"',
-                descriptionTwo: 'Tiene una autenticación con la biblioteca de seguridad JSON Web Token. Con esto validamos al usuario que se conecta y permitimos la sesión en varias rutas, además de no permitir el acceso sin iniciar sesión.'
+                descriptionTwo: 'Tiene una autenticación con la biblioteca de seguridad JSON Web Token. \n Con esto validamos al usuario que se conecta y permitimos la sesión en varias rutas, además de no permitir el acceso sin iniciar sesión.'
 
             },
             what_can_be_done: {
@@ -39,29 +39,6 @@ app.get('/', async (req, res) => {
                 two: 'Se puede visualizar los usuario, crear , actuliazar , eliminar y dar permisos o privilegios a los usuario creados'
 
             }
-        //     ,
-        //     rutas: [
-        //         {
-        //             id: 1,
-        //             description: 'login para entrar a la api',
-        //             urlApi: 'http://localhost:3000/api/'
-        //         },
-        //         {
-        //             id: 2,
-        //             description: 'rutas de los productos',
-        //             urlApi: 'http://localhost:3000/api/producto'
-        //         },
-        //         {
-        //             id: 3,
-        //             description: 'rutas de los clientes',
-        //             urlApi: 'http://localhost:3000/api/cliente'
-        //         },
-        //         {
-        //             id: 4,
-        //             description: 'rutas de los usuarios',
-        //             urlApi: 'http://localhost:3000/api/usuarios'
-        //         }
-        //     ]
         }
     );
 });

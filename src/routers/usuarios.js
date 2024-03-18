@@ -4,11 +4,11 @@ const getPool = require('../connection');
 const { validarToken, closeConnection } = require('../funciones');
 const {getsUsers, addUsers} = require('../controllers/controllers.usuario');
 
-// mostrar lo usuarios registrados
+// rutas
 router.get('/', validarToken,getsUsers);
-// creacion de los usuarios 
 router.post('/', validarToken, addUsers);
 
+// se puede mejorar el codigo
 router.delete('/:id', async (req, res) => {
     try {
         let result;
