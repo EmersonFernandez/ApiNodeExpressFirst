@@ -7,7 +7,7 @@ const {validarToken} = require('../funciones');
 
 
 // rutas
-router.get('/', validarToken , async (req, res) => {
+router.get('/tables', validarToken , async (req, res) => {
     try {
         const token = req.cookies.token;
         if (!token) {
@@ -25,7 +25,7 @@ router.get('/', validarToken , async (req, res) => {
             res.json({
                 status: 200,
                 error: false,
-                des: 'ruta de privilegios',
+                des: 'ruta de table',
                 message: 'this is OK',
                 token: req.results,
                 results: result.rows
@@ -34,11 +34,82 @@ router.get('/', validarToken , async (req, res) => {
             res.json({
                 status: 400,
                 error: false,
-                des: 'ruta de privilegios',
+                des: 'ruta de table',
                 message: 'No tiene permisos para ver esta vista',
                 results: null
             })
         }
+
+        closeConnection(pool, res);
+    } catch (error) {
+        console.error('Error al ejecutar la consulta:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            errorDes: 'Error interno del servidor',
+            erroMesagge: error.message
+        });
+    }
+});
+router.get('/privg', validarToken , async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            return res.json(
+                {
+                    error: true,
+                    errorMessage: 'No hay token, acceso no autorizado'
+                }
+            );
+        }
+
+        const pool = await getPool();
+        const result = await pool.query(`SELECT ncodigo,vnombre FROM privilegios`);
+            res.json({
+                status: 200,
+                error: false,
+                des: 'ruta de privilegios',
+                message: 'this is OK',
+                token: req.results,
+                results: result.rows
+            });
+        
+
+        closeConnection(pool, res);
+    } catch (error) {
+        console.error('Error al ejecutar la consulta:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            errorDes: 'Error interno del servidor',
+            erroMesagge: error.message
+        });
+    }
+});
+
+router.get('/rol', validarToken , async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            return res.json(
+                {
+                    error: true,
+                    errorMessage: 'No hay token, acceso no autorizado'
+                }
+            );
+        }
+
+        const pool = await getPool();
+        const result = await pool.query(`SELECT ncodigo,vnombre FROM rol`);
+            res.json({
+                status: 200,
+                error: false,
+                des: 'ruta de rol',
+                message: 'this is OK',
+                token: req.results,
+                results: result.rows
+            });
+        
 
         closeConnection(pool, res);
     } catch (error) {
