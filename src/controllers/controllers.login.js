@@ -68,7 +68,7 @@ async function Login(req,res) {
         });
 
     } catch (error) {
-        console.error('Error al ejecutar la consulta:', error);
+        console.error('Error al ejecutar la consulta l:', error);
         res.json({
             status: 500,
             error: true,

@@ -74,7 +74,7 @@ app.get('/formusuario', (req, res) => {
         <input type="pas" name="pass">
     </div>
     <div>
-        <select name="privilegio">
+        <select name="rol">
             <option disabled ><<< --- seleccione un rol --- >>> </option>
             <option value="1">Administrador</option>
             <option value="2">Cliente</option>
@@ -83,7 +83,7 @@ app.get('/formusuario', (req, res) => {
         </select>
     </div>
     <div>
-        <select name="rol">
+        <select name="privilegio">
             <option disabled ><<< --- seleccione un rol --- >>> </option>
             <option value="1">Modo Administrador</option>
             <option value="2">Modo Lectura</option>
