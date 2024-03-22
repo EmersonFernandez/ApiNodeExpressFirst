@@ -147,6 +147,7 @@ router.get('/', validarToken, async (req, res) => {
         and historial_privilegios.usuario = grantee
         GROUP BY table_name;
         `;
+        await pool.query('SELECT detectar_y_registrar_cambios_privilegios()');
         const result = await pool.query(queryGrant);
         res.json({
             status: 200,
