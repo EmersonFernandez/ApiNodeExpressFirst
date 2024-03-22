@@ -139,6 +139,7 @@ router.get('/', validarToken, async (req, res) => {
         SELECT 
         table_name
         ,STRING_AGG( distinct grantee, ', ') AS grantee
+        ,STRING_AGG( distinct nombreprivg, ',  ') AS nombreprivg
         ,STRING_AGG( distinct CAST(idprivg AS TEXT), ':') AS CODIGOS
         FROM 
             information_schema.table_privileges
