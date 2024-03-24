@@ -16,7 +16,7 @@ async function getsProducts (req,res) {
             );
         }
         const pool = await getPool();
-        const result = await pool.query('SELECT * FROM tx_productos');
+        const result = await pool.query('SELECT * FROM t_productos');
         res.json({
             status: 200,
             error: false,
@@ -50,9 +50,9 @@ async function addProducts (req,res) {
         }
         const { codProducto, nombre, descripcion, precio } = req.body;
         const pool = await getPool();
-        const resultSeq = await pool.query('SELECT max(NCODIGO) + 1 as seq FROM tx_productos');
+        const resultSeq = await pool.query('SELECT max(NCODIGO) + 1 as seq FROM t_productos');
         const seq = resultSeq.rows[0].seq;  
-        const query = 'INSERT INTO tx_productos (NCODIGO, NCODIGO_PRODUCTO, VNOMBRE, VDESCRIPCION, NPRECIO) VALUES ($1, $2, $3, $4, $5)';
+        const query = 'INSERT INTO t_productos (NCODIGO, NCODIGO_PRODUCTO, VNOMBRE, VDESCRIPCION, NPRECIO) VALUES ($1, $2, $3, $4, $5)';
         const result = await pool.query(query, [seq, codProducto, nombre, descripcion, precio]);
 
         if (result.rowCount > 0) {
@@ -96,7 +96,7 @@ async function updateProducts (req,res){
         }
         const { codigo ,codProducto, nombre, descripcion, precio } = req.body;
         const pool = await getPool();
-        const query = 'UPDATE tx_productos SET NCODIGO_PRODUCTO = $2, VNOMBRE = $3, VDESCRIPCION = $4, NPRECIO = $5 WHERE NCODIGO = $1';
+        const query = 'UPDATE t_productos SET NCODIGO_PRODUCTO = $2, VNOMBRE = $3, VDESCRIPCION = $4, NPRECIO = $5 WHERE NCODIGO = $1';
         const result = await pool.query(query,[codigo,codProducto,nombre,descripcion,precio]);
 
         if (result.rowCount > 0) {
@@ -133,7 +133,7 @@ async function deleteProduct(req,res){
     try {
         const id = req.params.id;
         const pool = await getPool();
-        const result = await pool.query('DELETE FROM tx_productos WHERE NCODIGO = $1',[id]);
+        const result = await pool.query('DELETE FROM t_productos WHERE NCODIGO = $1',[id]);
 
         if (result.rowCount > 0) {
 
@@ -179,7 +179,7 @@ async function getProduct (req,res){
         }
         const id = req.params.id;
         const pool = await getPool();
-        const result = await pool.query('SELECT * FROM tx_productos where NCODIGO = $1',[id]);
+        const result = await pool.query('SELECT * FROM t_productos where NCODIGO = $1',[id]);
         res.json({
             status: 200,
             error: false,

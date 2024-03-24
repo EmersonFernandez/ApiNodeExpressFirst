@@ -30,9 +30,9 @@ async function Login(req,res) {
             } else {
                 console.log('Conexión exitosa a la base de datos');
                 try {
-                    const result = await pool.query('SELECT VDOCUMENTO, USUARIO, NROL, NPRIVILEGIO, VNOMBRE,VAPELLIDO FROM USUARIOS WHERE USUARIO = $1', [process.env.USER]);
+                    const result = await pool.query('SELECT VDOCUMENTO, VUSUARIO, NROL, NPRIVILEGIO, VNOMBRE,VAPELLIDO FROM T_USUARIOS WHERE VUSUARIO = $1', [process.env.USER]);
                     // almacemanos los datos que vamos a pasar por el token
-                    users.user = result.rows[0].usuario;
+                    users.user = result.rows[0].vusuario;
                     users.documento = result.rows[0].vdocumento;
                     users.rol = result.rows[0].nrol;
                     users.privilegio = result.rows[0].nprivilegio;

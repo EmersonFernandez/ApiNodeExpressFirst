@@ -12,7 +12,7 @@ async function getsUsers(req, res) {
         }
         const pool = await getPool();
         if (Number(req.results.rol) === 1) {
-            const result = await pool.query('SELECT * FROM usuarios');
+            const result = await pool.query('SELECT * FROM t_usuarios');
 
             res.json({
                 status: 200,
@@ -64,24 +64,24 @@ async function addUsers(req, res) {
         try {
 
             // consultas para obetener la ultima secuencia del registro
-            const resultseq = await pool.query('SELECT MAX(NCODIGO) + 1 seq FROM USUARIOS');
+            const resultseq = await pool.query('SELECT MAX(NCODIGO) + 1 seq FROM T_USUARIOS');
             const seq = resultseq.rows[0].seq;
             
             // consulta para validar el usuarios que vamos a registrar existe en la base de dato
-            const existsUser = await pool.query(`select count(1) usersexit from usuarios where usuario = '${usuario}'`);
+            const existsUser = await pool.query(`select count(1) usersexit from t_usuarios where vusuario = '${usuario}'`);
 
             // valiamos que el usuario ya heciste 
             console.log(existsUser.rows[0].usersexit);
 
             if (Number(existsUser.rows[0].usersexit) == 0) {
                 // hacemos la insercion a la tabla 
-                const queryInsertUser = 'INSERT INTO USUARIOS (NCODIGO,VNOMBRE,VAPELLIDO,VTELEFONO,VDOCUMENTO,NROL,USUARIO,NPRIVILEGIO,VUSERCREATOR,BCHANGEPASSWORD) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
+                const queryInsertUser = 'INSERT INTO T_USUARIOS (NCODIGO,VNOMBRE,VAPELLIDO,VTELEFONO,VDOCUMENTO,NROL,VUSUARIO,NPRIVILEGIO,VUSERCREATOR,BCHANGEPASSWORD) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
                 const result = await pool.query(queryInsertUser, [seq, nombres, apellidos, telefono, documento, rol, usuario, privilegio, userCreator, changePassword]);
                 console.log(result.rowCount);
                 // validamos si se hizo la insercion correctamente 
                 if (result.rowCount > 0) {
                     // validamos si al momento de crear el usuario el campo rol es 1 
-                    // esto es para los usuarios que se usuarios como administradores
+                    // esto es para los usuarios que son administradores
                     if (Number(rol) === 1) {
                         const createUserQuery = `CREATE USER ${usuario.replace(/'/g, '')} WITH SUPERUSER CREATEDB CREATEROLE PASSWORD '1234';`;
                         await pool.query(createUserQuery, (err, res) => {
@@ -104,14 +104,14 @@ async function addUsers(req, res) {
                             });
 
                     } else if (Number(rol) != 1) {
-                        // creamos el usuario con la función creada en la base de datos
-                        const resultCreateUsers = await pool.query('SELECT * FROM create_users ($1,$2) AS create_users', [usuario, pass]);
+                        // creamos el usuario a nivel de base de dato
+                        const resultCreateUsers = await pool.query('SELECT * FROM f_create_users ($1,$2) AS create_users', [usuario, pass]);
                         // validamos si el usuarios se creo correctamenete 
                         if (resultCreateUsers.rows[0].create_users) {
-                            // la signamos los privilegios al usuario
-                            const resultPrivilegiosUser = await pool.query('select * from  config_privilegios_user($1,$2) AS config_priv', [privilegio, usuario]);
+                            // la asignamos el rol con sus repectivos privilegios
+                            const resultPrivilegiosUser = await pool.query('select * from  f_config_privilegios_user($1,$2) AS config_priv', [privilegio, usuario]);
 
-                            // validamos que si se hizo la configuracion de los privilegios al usuario que se esta creado 
+                            // validamos que si se hizo la configuración de los privilegios al usuario que se creo 
                             if (resultPrivilegiosUser.rows[0].config_priv) {
                                 return res.json({
                                     status: 200,
@@ -125,6 +125,7 @@ async function addUsers(req, res) {
                                     message: 'Error al configurar los privilegios del usuario'
                                 });
                             }
+                            
                         } else {
                             return res.json({
                                 status: 400,
