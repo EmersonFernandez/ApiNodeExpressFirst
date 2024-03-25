@@ -11,4 +11,5 @@ router.get('/', validarToken,getConfigTables);
 router.post('/', validarToken, addConfigPrivg);
 router.post('/removeprivg', validarToken, removPrinvg);
 
+
 module.exports = { router };
