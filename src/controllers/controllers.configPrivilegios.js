@@ -143,7 +143,7 @@ async function getConfigTables(req, res) {
             information_schema.table_privileges
             ,t_historial_privilegios
         WHERE grantee IN ('sololectura', 'escritura_actualizacion', 'lectura_eliminar', 'modoadministrador')
-        and historial_privilegios.usuario = grantee
+        and t_historial_privilegios.usuario = grantee
         GROUP BY table_name;
         `;
         await pool.query('SELECT f_detectar_y_registrar_cambios_privilegios()');
