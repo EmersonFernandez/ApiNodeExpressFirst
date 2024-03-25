@@ -185,6 +185,7 @@ async function addConfigPrivg(req,res) {
         const pool = await getPool();
 
         const result = await pool.query('SELECT * FROM f_config_rol_tables ($1,$2) config_table', [privilegios, tablesSelect]);
+        closeConnection(pool, res);
         if (result.rows[0].config_table) {
             return res.json({
                 status: 200,
@@ -199,7 +200,46 @@ async function addConfigPrivg(req,res) {
             });
         }
 
+    } catch (error) {
+        console.error('Error al ejecutar la consulta:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            errorDes: 'Error interno del servidor',
+            erroMesagge: error.message
+        });
+    }
+}
+
+async function removPrinvg(req,res){
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            return res.json(
+                {
+                    error: true,
+                    errorMessage: 'No hay token, acceso no autorizado'
+                }
+            );
+        }
+        const { privilegios, tablesSelect } = req.body;
+        const pool = await getPool();
+
+        const result = await pool.query('SELECT * FROM f_remove_privilege ($1,$2) config_table', [privilegios, tablesSelect]);
         closeConnection(pool, res);
+        if (result.rows[0].config_table) {
+            return res.json({
+                status: 200,
+                error: false,
+                message: 'Se removio correctamente los privilegios'
+            });
+        } else {
+            return res.json({
+                status: 400,
+                error: true,
+                message: 'Error al remover los privilegios del las tablas'
+            });
+        }
 
     } catch (error) {
         console.error('Error al ejecutar la consulta:', error);
@@ -216,5 +256,6 @@ module.exports = {
     getPrivg,
     getRol,
     getConfigTables,
-    addConfigPrivg
+    addConfigPrivg,
+    removPrinvg
 }
