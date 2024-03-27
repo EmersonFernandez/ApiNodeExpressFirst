@@ -12,7 +12,15 @@ async function getsUsers(req, res) {
         }
         const pool = await getPool();
         if (Number(req.results.rol) === 1) {
-            const result = await pool.query('SELECT * FROM t_usuarios');
+            const result = await pool.query(`select t_usuarios.*,t_rol.vnombre name_rol,t_privilegios.vnombre name_privg
+            from t_usuarios, t_rol , t_privilegios
+            where t_usuarios.nrol = t_rol.ncodigo
+            and (t_usuarios.nprivilegio = t_privilegios.ncodigo)
+            union 
+            select t_usuarios.*,t_rol.vnombre name_rol,'Administrador' name_privg 
+            from t_usuarios, t_rol
+            where t_usuarios.nrol = t_rol.ncodigo
+            and (t_usuarios.nprivilegio is null)`);
 
             res.json({
                 status: 200,
