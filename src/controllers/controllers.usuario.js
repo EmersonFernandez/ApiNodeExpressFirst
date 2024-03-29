@@ -228,7 +228,7 @@ async function updateUsers(req, res) {
                         }
                 };
 
-                if(pass != undefined || pass != null || pass != ''){
+                if(pass){
                     try {
                         await pool.query('SELECT f_cambiar_contrasena($1, $2)', [usuario, pass]);
                         await pool.query(`UPDATE t_usuarios SET bchangepassword = true WHERE vusuario = $1`,[usuario]);
