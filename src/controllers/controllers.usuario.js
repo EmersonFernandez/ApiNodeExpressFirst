@@ -30,6 +30,7 @@ async function getsUsers(req, res) {
                 results: result.rows
             });
         } else {
+            console.log('No permitido');
             res.json({
                 status: 400,
                 error: false,
