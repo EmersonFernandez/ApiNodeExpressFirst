@@ -260,7 +260,7 @@ async function updateUsers(req, res) {
         closeConnection(pool,res);
         return res.json({
             status: 400,
-            error: true,
+            error: false,
             message: 'Se actulizó correctamente el usuario'
         })     
         
