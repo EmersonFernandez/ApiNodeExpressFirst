@@ -170,7 +170,113 @@ async function addUsers(req, res) {
     }
 }
 
+
+
+// fuction que va a realizar la actualización
+async function updateUsers(req, res) {
+    try {
+        // validacion del token 
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({ error: 'No hay token, acceso no autorizado' });
+        }
+
+        // capturamos los datos del req body
+        const { nombres, apellidos, telefono, documento, rol, usuario, privilegio, pass, codigo } = req.body;
+        // llamamos la conexion
+        const pool = await getPool();
+        // armamos el script y llamos los privielegios antes de actalizar para hacer algunas validaciones adcionales
+        const resultPrivg = await pool.query(`SELECT NPRIVILEGIO FROM T_USUARIOS WHERE NCODIGO = $1`,[codigo]);
+        // armamos el script que se va ejecutar
+        const sqlQuery = `
+            UPDATE T_USUARIOS SET
+            VNOMBRE = $1,
+            VAPELLIDO = $2,
+            VTELEFONO = $3,
+            VDOCUMENTO = $4,
+            NROL = $5,
+            VUSUARIO = $6,
+            NPRIVILEGIO = $7,
+            BCHANGEPASSWORD = true
+            WHERE NCODIGO = $8
+        `;
+
+        // validamos que el usuario se tengas los permisos adecaudos para hacer la actualzación
+        if(Number(req.results.rol) == 1){
+            const result = await pool.query(sqlQuery,[
+                nombres,apellidos,telefono,documento,rol,usuario,privilegio,codigo
+            ]);
+            // validamos que si se realizo la actualición
+            if(result.rowCount > 0){
+
+                // alacenamos el valor del privilegio anterior
+                const privg = Number(resultPrivg.rows[0].nprivilegio);
+                //console.log('before privg ', privg);
+                
+                // validamos si vamos actulizar los privilegio o rol al usuario qu estamos actualizando
+                if (privg != Number(privilegio)){
+                        const remove = await pool.query(`select * from f_remove_rol($1,$2)`,[privg,usuario]);
+                        const results = await pool.query('select * from  f_config_privilegios_user($1,$2) AS config_priv', [privilegio, usuario]);
+                        if(results.rows[0].config_priv){
+                            console.log('correcto');
+                        } else {
+                            return res.json({
+                                status: 400,
+                                error: true,
+                                message: 'Error al actualizar los roles'
+                            });
+                        }
+                };
+
+                if(pass != undefined || pass != null || pass != ''){
+                    try {
+                        await pool.query('SELECT f_cambiar_contrasena($1, $2)', [usuario, pass]);
+                        await pool.query(`UPDATE t_usuarios SET bchangepassword = true WHERE vusuario = $1`,[usuario]);
+                    } catch (error) {
+                        console.log('Error ' ,error);
+                        return res.json({
+                            status: 500,
+                            error: true,
+                            message: error.message
+                        });
+                    }
+                    
+                }
+            }else{
+                return res.json({
+                    status: 400,
+                    error: true,
+                    message: 'Error al actulizar'
+                })
+            }
+
+        }else{
+            return res.json({
+                status: 400,
+                error: true,
+                message: 'El usuario no tiene los permisos adecuados'
+            })
+        }
+        closeConnection(pool,res);
+        return res.json({
+            status: 400,
+            error: true,
+            message: 'Se actulizó correctamente el usuario'
+        })     
+        
+    }catch(error){
+        console.error('Error al ejecutar la consulta 1:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            errorDes: 'Error interno del servidor',
+            erroMesagge: error.message
+        });
+    }
+}
+
 module.exports = {
     getsUsers,
-    addUsers
+    addUsers,
+    updateUsers
 }

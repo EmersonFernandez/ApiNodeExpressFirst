@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const getPool = require('../connection');
 const { validarToken, closeConnection } = require('../funciones');
-const {getsUsers, addUsers} = require('../controllers/controllers.usuario');
+const {getsUsers, addUsers,updateUsers} = require('../controllers/controllers.usuario');
 
 // rutas
 router.get('/', validarToken,getsUsers);
 router.post('/', validarToken, addUsers);
+router.put('/', validarToken, updateUsers);
 
 // se puede mejorar el codigo
 router.delete('/:id', async (req, res) => {

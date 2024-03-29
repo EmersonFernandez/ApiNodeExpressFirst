@@ -30,7 +30,7 @@ async function Login(req,res) {
             } else {
                 console.log('Conexión exitosa a la base de datos');
                 try {
-                    const result = await pool.query('SELECT VDOCUMENTO, VUSUARIO, NROL, NPRIVILEGIO, VNOMBRE,VAPELLIDO FROM T_USUARIOS WHERE VUSUARIO = $1', [process.env.USER]);
+                    const result = await pool.query('SELECT * FROM T_USUARIOS WHERE VUSUARIO = $1', [process.env.USER]);
                     // almacemanos los datos que vamos a pasar por el token
                     users.user = result.rows[0].vusuario;
                     users.documento = result.rows[0].vdocumento;
@@ -38,6 +38,8 @@ async function Login(req,res) {
                     users.privilegio = result.rows[0].nprivilegio;
                     users.nombres = result.rows[0].vnombre;
                     users.apellidos = result.rows[0].vapellido;
+                    users.changepassword = result.rows[0].bchangepassword;
+                    await pool.query(`UPDATE T_USUARIOS SET DFECHALAST = CURRENT_TIMESTAMP WHERE VUSUARIO = $1`,[process.env.USER]);
 
                 } catch (error) {
                     console.error('Error en la consulta:', error);
