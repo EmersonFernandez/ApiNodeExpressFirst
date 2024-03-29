@@ -39,7 +39,7 @@ async function Login(req,res) {
                     users.nombres = result.rows[0].vnombre;
                     users.apellidos = result.rows[0].vapellido;
                     users.changepassword = result.rows[0].bchangepassword;
-                    await pool.query(`UPDATE T_USUARIOS SET DFECHALAST = CURRENT_TIMESTAMP WHERE VUSUARIO = $1`,[process.env.USER]);
+                    //await pool.query(`UPDATE T_USUARIOS SET DFECHALAST = CURRENT_TIMESTAMP WHERE VUSUARIO = $1`,[process.env.USER]);
 
                 } catch (error) {
                     console.error('Error en la consulta:', error);
