@@ -11,7 +11,7 @@ let port = 3000 || process.env.PORT;
 
 // cors opciones
 const corsOptions = {
-    origin: '*',
+    origin: 'http://127.0.0.7:5500',
     credentials: true,
 };
 
