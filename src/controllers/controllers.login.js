@@ -1,95 +1,86 @@
-// controlador de login
 const getPool = require('../connection');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const {closeConnection} = require('../funciones');
-require('dotenv').config();
 
-// logica del login
-async function Login(req,res) {
+
+async function Login(req, res) {
     const { user, pass } = req.body;
-    // almacenamos el user y las clave en las variable de entornos
-    process.env.PASS = pass;
-    process.env.USER = user;
-
-    // establecemos un objeto vacio para almacenar los datos que se van a pasar al token
-    const users = {}
-
     try {
+        // llamamos la conexion
         const pool = await getPool();
-        pool.query('SELECT 1', async (err, result) => {
+        // hacemos una consulta
+        const { rows } = await pool.query('SELECT * FROM T_USUARIOS WHERE VUSUARIO = $1', [user]);
 
-            if (err) {
-                console.log('Error al conectar a la base de datos:', err);
-                res.json({
-                    status: 500,
-                    error: true,
-                    errorDes: 'Ocurrio un error',
-                    errorMessage: err.message
-                });
+        // validamos que el usuario exista
+        if (rows.length > 0) {
+            const usuario = rows[0];
+            const contraseñaValida = await bcrypt.compare(pass, usuario.vpassword);
 
-            } else {
-                console.log('Conexión exitosa a la base de datos');
-                try {
-                    const result = await pool.query('SELECT * FROM T_USUARIOS WHERE VUSUARIO = $1', [process.env.USER]);
-                    // almacemanos los datos que vamos a pasar por el token
-                    users.user = result.rows[0].vusuario;
-                    users.documento = result.rows[0].vdocumento;
-                    users.rol = result.rows[0].nrol;
-                    users.privilegio = result.rows[0].nprivilegio;
-                    users.nombres = result.rows[0].vnombre;
-                    users.apellidos = result.rows[0].vapellido;
-                    users.changepassword = result.rows[0].bchangepassword;
-                    //await pool.query(`UPDATE T_USUARIOS SET DFECHALAST = CURRENT_TIMESTAMP WHERE VUSUARIO = $1`,[process.env.USER]);
-
-                } catch (error) {
-                    console.error('Error en la consulta:', error);
-                    res.json({
-                        status: 400,
-                        error: true,
-                        errorDes: 'Error interno del servidor',
-                        erroMesagge: error.message
-                    });
-                }
-                closeConnection(pool, res);
-
-                const token = generateToken(users);
-
-                // pasamos el token a las cookies
+            // validamos que la contrasela hash si tenga contenido
+            if (contraseñaValida) {
+                // generamos el token
+                const token = generateToken(usuario);
+                // madamos el token a la cookies
                 res.cookie('token', token, { secure: true, sameSite: 'none' });
-
+                // mandamos la repuesta
                 res.json({
                     status: 200,
                     error: false,
                     message: 'Credenciales correctas',
                     token,
-                    user: users.user,
-                    rol: users.rol,
-                    privilegio: users.privilegio
+                    user: usuario.vusuario,
+                    rol: usuario.nrol,
+                    privilegio: usuario.nprivilegio
+                });
+            } else {
+                // si pass sea incorrectas o es null
+                res.json({
+                    status: 401,
+                    error: true,
+                    errorMesagge: 'Credenciales incorrectas'
                 });
             }
-        });
-
+        } else {
+            // si el usuario no existe
+            res.json({
+                status: 404,
+                error: true,
+                errorMesagge: 'Usuario o contreaseña iccorrestas'
+            });
+        }
+        // Cierra la conexión con la base de datos
+        closeConnection(pool,res); 
     } catch (error) {
-        console.error('Error al ejecutar la consulta l:', error);
+        // manejos de errores
+        console.error('Error al ejecutar la consulta:', error);
         res.json({
             status: 500,
             error: true,
-            errorDes: 'Error interno del servidor',
-            erroMesagge: error.message
+            message: 'Error interno del servidor',
+            errorMessage: error.message
         });
     }
 }
 
-// almacenamos en la variable de entorno la parlabra secreta del token
-process.env.SECRET_SENTENCE = '0101452';
+// almacenamos la palabara clave para el token
+process.env.SECRET_SENTENCE = '010101';
 
-// funcion que nos permite generar el token
-function generateToken(user){
-    const token = jwt.sign(user,process.env.SECRET_SENTENCE,{expiresIn:'15m'});
+// fucion que genera el token 
+function generateToken(usuario) {
+    const token = jwt.sign({
+        user: usuario.vusuario,
+        documento: usuario.vdocumento,
+        rol: usuario.nrol,
+        privilegio: usuario.nprivilegio,
+        nombres: usuario.vnombre,
+        apellidos: usuario.vapellido,
+        changepassword: usuario.bchangepassword
+    }, process.env.SECRET_SENTENCE, { expiresIn: '15m' });
     return token;
 }
 
-
+// exportamos el login
 module.exports = {
     Login
-}
+};

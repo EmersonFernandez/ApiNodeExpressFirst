@@ -1,179 +1,168 @@
-// controlador de los usuarios
+// controlador usuarios
 const getPool = require('../connection');
 const { closeConnection } = require('../funciones');
+const bcrypt = require('bcryptjs');
 
-// mostrar todos los usuaios
+// mostrar los usuaios
 async function getsUsers(req, res) {
     try {
 
+        // validacion si existe el token
         const token = req.cookies.token;
         if (!token) {
             return res.json({ error: 'No hay token, acceso no autorizado' });
         }
-        const pool = await getPool();
-        if (Number(req.results.rol) === 1) {
-            const result = await pool.query(`select t_usuarios.*,t_rol.vnombre name_rol,t_privilegios.vnombre name_privg
-            from t_usuarios, t_rol , t_privilegios
-            where t_usuarios.nrol = t_rol.ncodigo
-            and (t_usuarios.nprivilegio = t_privilegios.ncodigo)
-            union 
-            select t_usuarios.*,t_rol.vnombre name_rol,'Administrador' name_privg 
-            from t_usuarios, t_rol
-            where t_usuarios.nrol = t_rol.ncodigo
-            and (t_usuarios.nprivilegio is null)`);
 
-            res.json({
-                status: 200,
-                error: false,
-                des: 'ruta de usuarios',
-                message: 'this is OK',
-                results: result.rows
-            });
-        } else {
-            console.log('No permitido');
-            res.json({
+        // validamos que el usuario tenga los permisos adecuados
+        if (Number(req.results.rol) != 1) {
+            return res.json({
                 status: 400,
-                error: false,
-                des: 'ruta de usuarios',
-                message: 'No tiene permisos para ver esta vista',
-                results: null
+                error: true,
+                errorMessage: 'No tiene acceso a esta acción por motivos de privilegios'
             })
         }
+
+        // llamamos la conexion
+        const pool = await getPool();
+        // cosntrución de le la consulta
+        const sqlQuery = `select t_usuarios.*,t_rol.vnombre name_rol,t_privilegios.vnombre name_privg
+        from t_usuarios, t_rol , t_privilegios
+        where t_usuarios.nrol = t_rol.ncodigo
+        and (t_usuarios.nprivilegio = t_privilegios.ncodigo)
+        union 
+        select t_usuarios.*,t_rol.vnombre name_rol,'Administrador' name_privg 
+        from t_usuarios, t_rol
+        where t_usuarios.nrol = t_rol.ncodigo
+        and (t_usuarios.nprivilegio is null)
+        ORDER BY NCODIGO`;
+        // ejecutamos el query 
+        const result = await pool.query(sqlQuery);
+
+        // mandamos la respuesta
+        res.json({
+            status: 200,
+            error: false,
+            des: 'ruta de usuarios',
+            message: 'this is OK',
+            results: result.rows
+        });
 
         closeConnection(pool, res);
 
     } catch (error) {
+        // manejo de errores
         console.error('Error al ejecutar la consulta:', error);
         res.json({
             status: 500,
             error: true,
-            errorDes: 'Error interno del servidor',
-            erroMesagge: error.message
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
         });
     }
 };
 
-// creacion de los usuarios -- se puede mejorar
+// creación de los usuarios
 async function addUsers(req, res) {
     try {
         // validacion del token 
         const token = req.cookies.token;
         if (!token) {
-            return res.status(401).json({ error: 'No hay token, acceso no autorizado' });
+            return res.json({ error: 'No hay token, acceso no autorizado' });
         }
 
-        // obtemos las campos donde se llena la informacion
+        // validamos que el usuario tenga los permisos adecuados
+        if (Number(req.results.rol) != 1) {
+            return res.json({
+                status: 400,
+                error: true,
+                errorMessage: 'No tiene acceso a esta acción por motivos de privilegios'
+            })
+        }
+
+        // obtemos los campos de body
         const { nombres, apellidos, telefono, documento, rol, usuario, privilegio, pass } = req.body;
+        // hash de la password
+        const hashpassword = await bcrypt.hash(pass, 10);
+        // mandamos a llamar el usuario conectado
         const userCreator = req.results.user;
+        // para establecer que el usurio necesita cambio de password
         const changePassword = true;
 
-        // la conexion
+        // llamamos la conexio
         const pool = await getPool();
 
-        try {
+        // obtenemos la secuencia
+        const resultseq = await pool.query('SELECT MAX(NCODIGO) + 1 seq FROM T_USUARIOS');
+        // alamcenamos la secuencia en una variable
+        const seq = resultseq.rows[0].seq;
 
-            // consultas para obetener la ultima secuencia del registro
-            const resultseq = await pool.query('SELECT MAX(NCODIGO) + 1 seq FROM T_USUARIOS');
-            const seq = resultseq.rows[0].seq;
-            
-            // consulta para validar el usuarios que vamos a registrar existe en la base de dato
-            const existsUser = await pool.query(`select count(1) usersexit from t_usuarios where vusuario = '${usuario}'`);
+        // validamos que el usuairo no exista
+        const existsUser = await pool.query(`select count(1) usersexit from t_usuarios where vusuario = '${usuario}'`);
 
-            // valiamos que el usuario ya heciste 
-            console.log(existsUser.rows[0].usersexit);
+        if (Number(existsUser.rows[0].usersexit) == 0) {
+            // construimos el query de insercion
+            const queryInsertUser = `INSERT INTO T_USUARIOS
+                (
+                    NCODIGO
+                    ,VNOMBRE
+                    ,VAPELLIDO
+                    ,VTELEFONO
+                    ,VDOCUMENTO
+                    ,NROL
+                    ,VUSUARIO
+                    ,NPRIVILEGIO
+                    ,VUSERCREATOR
+                    ,BCHANGEPASSWORD
+                    ,VPASSWORD
+                ) VALUES
+                ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`;
 
-            if (Number(existsUser.rows[0].usersexit) == 0) {
-                // hacemos la insercion a la tabla 
-                const queryInsertUser = 'INSERT INTO T_USUARIOS (NCODIGO,VNOMBRE,VAPELLIDO,VTELEFONO,VDOCUMENTO,NROL,VUSUARIO,NPRIVILEGIO,VUSERCREATOR,BCHANGEPASSWORD) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)';
-                const result = await pool.query(queryInsertUser, [seq, nombres, apellidos, telefono, documento, rol, usuario, privilegio, userCreator, changePassword]);
-                console.log(result.rowCount);
-                // validamos si se hizo la insercion correctamente 
-                if (result.rowCount > 0) {
-                    // validamos si al momento de crear el usuario el campo rol es 1 
-                    // esto es para los usuarios que son administradores
-                    if (Number(rol) === 1) {
-                        const createUserQuery = `CREATE USER ${usuario.replace(/'/g, '')} WITH SUPERUSER CREATEDB CREATEROLE PASSWORD '1234';`;
-                        await pool.query(createUserQuery, (err, res) => {
-                                if (err) {
-                                    console.error('Error al ejecutar el script de usuario administrador:', err);
-                                        return res.json({
-                                            status: 400,
-                                            error: true,
-                                            message: err
-                                        });
-                                } else {
-                                console.log('Script ejecutado correctamente');
-                                    return res.json({
-                                        status: 200,
-                                        error: false,
-                                        message: 'El usuario fue creado correctamente'
-                                    });
-                                
-                                }
-                            });
+            // ejecutamos el query
+            const result = await pool.query(queryInsertUser,
+                [seq, nombres, apellidos, telefono, documento, rol, usuario, privilegio, userCreator, changePassword, hashpassword]);
 
-                    } else if (Number(rol) != 1) {
-                        // creamos el usuario a nivel de base de dato
-                        const resultCreateUsers = await pool.query('SELECT * FROM f_create_users ($1,$2) AS create_users', [usuario, pass]);
-                        // validamos si el usuarios se creo correctamenete 
-                        if (resultCreateUsers.rows[0].create_users) {
-                            // la asignamos el rol con sus repectivos privilegios
-                            const resultPrivilegiosUser = await pool.query('select * from  f_config_privilegios_user($1,$2) AS config_priv', [privilegio, usuario]);
-
-                            // validamos que si se hizo la configuración de los privilegios al usuario que se creo 
-                            if (resultPrivilegiosUser.rows[0].config_priv) {
-                                return res.json({
-                                    status: 200,
-                                    error: false,
-                                    message: 'El usuario fue creado correctamente'
-                                });
-                            } else {
-                                return res.json({
-                                    status: 400,
-                                    error: true,
-                                    message: 'Error al configurar los privilegios del usuario'
-                                });
-                            }
-                            
-                        } else {
-                            return res.json({
-                                status: 400,
-                                error: true,
-                                message: 'Error al crear el usuario'
-                            });
-                        }
-                    }
-
-                }
+            // validamos si se hizo la insercion correctamente 
+            if (result.rowCount > 0) {
+                res.json({
+                    status: 400,
+                    error: false,
+                    message: 'Usuario creado correctamente'
+                })
             } else {
-                return res.json({
+                // si hay un error
+                res.json({
                     status: 400,
                     error: true,
-                    message: 'El usuario ' + usuario + ' ya existe'
+                    errorMesagge: 'Error al crear el usuario'
                 });
             }
 
-
-            // finalizamos con el cierre de la conexion
-        } finally {
-            closeConnection(pool, res);
+        } else {
+            // si el usuario ya existe
+            res.json({
+                status: 400,
+                error: true,
+                errorMesagge: 'El usuario ' + usuario + ' ya existe'
+            });
         }
 
-        // la salida de los errores 
+        // Cerramos la conexion
+        closeConnection(pool, res);
     } catch (error) {
-        console.error('Error al ejecutar la consulta 1:', error);
+        // majenos de errores
+        console.error('Error al ejecutar la consulta', error);
         return res.json({
             status: 500,
             error: true,
-            errorDes: 'Error interno del servidor',
-            erroMesagge: error.message
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
         });
     }
 }
 
 
 
-// fuction que va a realizar la actualización
+// Actualización de usuarios
 async function updateUsers(req, res) {
     try {
         // validacion del token 
@@ -182,13 +171,21 @@ async function updateUsers(req, res) {
             return res.status(401).json({ error: 'No hay token, acceso no autorizado' });
         }
 
+        // validamos que el usuario tenga los permisos adecuados
+        if (Number(req.results.rol) != 1) {
+            return res.json({
+                status: 400,
+                error: true,
+                errorMessage: 'No tiene acceso a esta acción por motivos de privilegios'
+            })
+        }
+
         // capturamos los datos del req body
         const { nombres, apellidos, telefono, documento, rol, usuario, privilegio, pass, codigo } = req.body;
         // llamamos la conexion
         const pool = await getPool();
-        // armamos el script y llamos los privielegios antes de actalizar para hacer algunas validaciones adcionales
-        const resultPrivg = await pool.query(`SELECT NPRIVILEGIO FROM T_USUARIOS WHERE NCODIGO = $1`,[codigo]);
-        // armamos el script que se va ejecutar
+
+        // construimos el script que se va ejecutar
         const sqlQuery = `
             UPDATE T_USUARIOS SET
             VNOMBRE = $1,
@@ -202,82 +199,119 @@ async function updateUsers(req, res) {
             WHERE NCODIGO = $8
         `;
 
-        // validamos que el usuario se tengas los permisos adecaudos para hacer la actualzación
-        if(Number(req.results.rol) == 1){
-            const result = await pool.query(sqlQuery,[
-                nombres,apellidos,telefono,documento,rol,usuario,privilegio,codigo
-            ]);
-            // validamos que si se realizo la actualición
-            if(result.rowCount > 0){
+        // ejecutamos el query 
+        const result = await pool.query(sqlQuery, [
+            nombres, apellidos, telefono, documento, rol, usuario, privilegio, codigo
+        ]);
 
-                // alacenamos el valor del privilegio anterior
-                const privg = Number(resultPrivg.rows[0].nprivilegio);
-                //console.log('before privg ', privg);
-                
-                // validamos si vamos actulizar los privilegio o rol al usuario qu estamos actualizando
-                if (privg != Number(privilegio)){
-                        const remove = await pool.query(`select * from f_remove_rol($1,$2)`,[privg,usuario]);
-                        const results = await pool.query('select * from  f_config_privilegios_user($1,$2) AS config_priv', [privilegio, usuario]);
-                        if(results.rows[0].config_priv){
-                            console.log('correcto');
-                        } else {
-                            return res.json({
-                                status: 400,
-                                error: true,
-                                message: 'Error al actualizar los roles'
-                            });
-                        }
-                };
 
-                if(pass){
-                    try {
-                        await pool.query('SELECT f_cambiar_contrasena($1, $2)', [usuario, pass]);
-                        await pool.query(`UPDATE t_usuarios SET bchangepassword = true WHERE vusuario = $1`,[usuario]);
-                    } catch (error) {
-                        console.log('Error ' ,error);
-                        return res.json({
-                            status: 500,
-                            error: true,
-                            message: error.message
-                        });
-                    }
-                    
+        // validamos que si se realizo la actualición
+        if (result.rowCount > 0) {
+            // validamos si va ha actulizar la password
+            if (pass) {
+                // manejos de errores
+                try {
+                    // construimos el query para actulizar la password
+                    const sqlQuery = `UPDATE T_USUARIOS SET
+                                        VPASSWORD = $1
+                                        WHERE NCODIGO = $2`;
+                    // hash de la password
+                    const hashpassword = await bcrypt.hash(pass, 10);
+                    // ejecutamos el query
+                    const result = await pool.query(sqlQuery, [hashpassword, codigo]);
+                } catch (error) {
+                    // manejos de errores
+                    console.log('Error ', error);
+                    return res.json({
+                        status: 500,
+                        error: true,
+                        message: 'Error interno del servidor',
+                        errorMesagge: error.message
+                    });
                 }
-            }else{
-                return res.json({
-                    status: 400,
-                    error: true,
-                    message: 'Error al actulizar'
-                })
-            }
 
-        }else{
-            return res.json({
+            }
+        } else {
+            // si ocurre un error al momento de actualizar el usuario
+            res.json({
                 status: 400,
                 error: true,
-                message: 'El usuario no tiene los permisos adecuados'
+                errorMesagge: 'error al actulizar'
             })
         }
-        closeConnection(pool,res);
-        return res.json({
-            status: 400,
+
+        res.json({
+            status: 200,
             error: false,
             message: 'Se actulizó correctamente el usuario'
-        })     
-        
-    }catch(error){
+        })
+        // Cerramos le conexion
+        closeConnection(pool, res);
+    } catch (error) {
         console.error('Error al ejecutar la consulta 1:', error);
         return res.json({
             status: 500,
             error: true,
-            errorDes: 'Error interno del servidor',
-            erroMesagge: error.message
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
         });
     }
 }
 
+
+async function deleteUsers(req,res) {
+    try {
+        // validacion del token 
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({ error: 'No hay token, acceso no autorizado' });
+        }
+
+        // validamos que el usuario tenga los permisos adecuados
+        if (Number(req.results.rol) != 1) {
+            return res.json({
+                status: 400,
+                error: true,
+                errorMessage: 'No tiene acceso a esta acción por motivos de privilegios'
+            })
+        } 
+        // llamamos la conexion
+        const pool = await getPool();
+        // capturamos el parametro
+        const id = req.params.id;
+        // construimos el query de eliminar
+        const sqlQuery = `DELETE FROM T_USUARIOS WHERE NCODIGO = $1`;
+        const result = await pool.query(sqlQuery,[id]);
+
+        // validamos que si elimino
+        if(result.rowCount > 0 ){
+            res.json({
+                status: 200,
+                error: false,
+                message: 'Se elimino correctamente el usuario'
+            })
+        }else{
+            res.json({
+                status: 400,
+                error: true,
+                errorMesagge:'Error al eliminar el usuario'
+            })
+        }
+    } catch (error) {
+        console.error('Error al ejecutar la consulta 1:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
+        });
+    }
+}
+
+// exportamos las funciones
 module.exports = {
     getsUsers,
     addUsers,
-    updateUsers
+    updateUsers,
+    deleteUsers
 }
