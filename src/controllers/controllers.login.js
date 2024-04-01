@@ -1,7 +1,8 @@
 const getPool = require('../connection');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const {closeConnection} = require('../funciones');
+const { closeConnection } = require('../funciones');
+const { resolveInclude } = require('ejs');
 
 
 async function Login(req, res) {
@@ -50,7 +51,7 @@ async function Login(req, res) {
             });
         }
         // Cierra la conexión con la base de datos
-        closeConnection(pool,res); 
+        closeConnection(pool, res);
     } catch (error) {
         // manejos de errores
         console.error('Error al ejecutar la consulta:', error);
@@ -69,6 +70,7 @@ process.env.SECRET_SENTENCE = '010101';
 // fucion que genera el token 
 function generateToken(usuario) {
     const token = jwt.sign({
+        codigo: usuario.ncodigo,
         user: usuario.vusuario,
         documento: usuario.vdocumento,
         rol: usuario.nrol,
@@ -80,7 +82,64 @@ function generateToken(usuario) {
     return token;
 }
 
+
+
+async function ResetPassword(req, res) {
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            return res.json(
+                {
+                    status: 400,
+                    error: true,
+                    errorMessage: 'No hay token, acceso no autorizado'
+                }
+            )
+        }
+
+        // capturamos los datos del body
+        const { pass, user } = req.body;
+
+        // lamamos la conexion
+        const pool = await getPool();
+        // hash de la password
+        const hashpassword = await bcrypt.hash(pass, 10);
+        // construimos el query 
+        const sqlQuery = `
+        UPDATE T_USUARIO SET
+            vpassword = $1,
+            bchangepassword = false
+        WHERE ncodigo = $2
+        AND vusuario = $3    
+        `;
+        // ejecutamos el query 
+        pool.query(sqlQuery, [hashpassword, req.results.codigo, user]);
+
+        // mandamos la respuestas
+        res.json({
+            status: 200,
+            error: false,
+            mesagge: 'La clave se cambio con exito'
+        });
+        
+        // Cerramos la conexion
+        closeConnection(pool,res);
+        
+    } catch (error) {
+        // manejos de errores
+        console.error('Error al ejecutar la consulta:', error);
+        res.json({
+            status: 500,
+            error: true,
+            message: 'Error interno del servidor',
+            errorMessage: error.message
+        });
+    }
+}
+
 // exportamos el login
 module.exports = {
-    Login
+    Login,
+    ResetPassword
 };
+
