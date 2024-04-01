@@ -313,17 +313,18 @@ async function getUserUnique(req, res) {
         // llamamos la conexion
         const pool = await getPool();
         // cosntrución de le la consulta
-        const sqlQuery = `select t_usuarios.*,t_rol.vnombre name_rol,t_privilegios.vnombre name_privg
-        from t_usuarios, t_rol , t_privilegios
-        where t_usuarios.nrol = t_rol.ncodigo
-        and (t_usuarios.nprivilegio = t_privilegios.ncodigo)
-        union 
-        select t_usuarios.*,t_rol.vnombre name_rol,'Administrador' name_privg 
-        from t_usuarios, t_rol
-        where t_usuarios.nrol = t_rol.ncodigo
-        and (t_usuarios.nprivilegio is null)
-        and t_usuarios.ncodigo = $1
-        ORDER BY NCODIGO`;
+        const sqlQuery = `select * from (
+            select t_usuarios.*,t_rol.vnombre name_rol,t_privilegios.vnombre name_privg
+                from t_usuarios, t_rol , t_privilegios
+                where t_usuarios.nrol = t_rol.ncodigo
+                and (t_usuarios.nprivilegio = t_privilegios.ncodigo)
+                union 
+                select t_usuarios.*,t_rol.vnombre name_rol,'Administrador' name_privg 
+                from t_usuarios, t_rol
+                where t_usuarios.nrol = t_rol.ncodigo
+                and (t_usuarios.nprivilegio is null)
+                ORDER BY NCODIGO
+        ) where ncodigo = $1`;
         // ejecutamos el query 
         const result = await pool.query(sqlQuery,[Number(req.results.codigo)]);
         
