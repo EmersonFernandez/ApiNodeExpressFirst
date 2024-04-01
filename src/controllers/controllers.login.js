@@ -105,7 +105,7 @@ async function ResetPassword(req, res) {
         const hashpassword = await bcrypt.hash(pass, 10);
         // construimos el query 
         const sqlQuery = `
-        UPDATE T_USUARIO SET
+        UPDATE T_USUARIOS SET
             vpassword = $1,
             bchangepassword = false
         WHERE ncodigo = $2
