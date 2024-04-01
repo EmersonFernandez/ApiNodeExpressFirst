@@ -2,7 +2,6 @@ const getPool = require('../connection');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { closeConnection } = require('../funciones');
-const { resolveInclude } = require('ejs');
 
 
 async function Login(req, res) {
