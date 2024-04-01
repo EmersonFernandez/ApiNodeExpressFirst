@@ -322,7 +322,7 @@ async function getUserUnique(req, res) {
         from t_usuarios, t_rol
         where t_usuarios.nrol = t_rol.ncodigo
         and (t_usuarios.nprivilegio is null)
-        and ncodigo = ${Number(req.codigo)}
+        and t_usuarios.ncodigo = ${Number(req.codigo)}
         ORDER BY NCODIGO`;
         // ejecutamos el query 
         const result = await pool.query(sqlQuery);
