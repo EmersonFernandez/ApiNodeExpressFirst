@@ -112,14 +112,23 @@ async function ResetPassword(req, res) {
         AND vusuario = $3    
         `;
         // ejecutamos el query 
-        pool.query(sqlQuery, [hashpassword, req.results.codigo, user]);
+        const result = await pool.query(sqlQuery, [hashpassword, req.results.codigo, user]);
 
-        // mandamos la respuestas
+        if(result.rowCount > 0){
+            // mandamos la respuestas
         res.json({
             status: 200,
             error: false,
-            mesagge: 'La clave se cambio con exito'
+            message: 'La contraseña se cambio con exito'
         });
+        }else{
+            // mandamos la respuestas
+        res.json({
+            status: 400,
+            error: true,
+            message: 'Error al cambiar la contraseña'
+        });
+        }
         
         // Cerramos la conexion
         closeConnection(pool,res);
