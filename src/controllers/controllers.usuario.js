@@ -299,10 +299,62 @@ async function deleteUsers(req,res) {
     }
 }
 
+
+// mostrar los usuaios
+async function getUserUnique(req, res) {
+    try {
+
+        // validacion si existe el token
+        const token = req.cookies.token;
+        if (!token) {
+            return res.json({ error: 'No hay token, acceso no autorizado' });
+        }
+
+        // llamamos la conexion
+        const pool = await getPool();
+        // cosntrución de le la consulta
+        const sqlQuery = `select t_usuarios.*,t_rol.vnombre name_rol,t_privilegios.vnombre name_privg
+        from t_usuarios, t_rol , t_privilegios
+        where t_usuarios.nrol = t_rol.ncodigo
+        and (t_usuarios.nprivilegio = t_privilegios.ncodigo)
+        union 
+        select t_usuarios.*,t_rol.vnombre name_rol,'Administrador' name_privg 
+        from t_usuarios, t_rol
+        where t_usuarios.nrol = t_rol.ncodigo
+        and (t_usuarios.nprivilegio is null)
+        and ncodigo = ${Number(req.codigo)}
+        ORDER BY NCODIGO`;
+        // ejecutamos el query 
+        const result = await pool.query(sqlQuery);
+
+        // mandamos la respuesta
+        res.json({
+            status: 200,
+            error: false,
+            des: 'ruta de usuarios conectado',
+            message: 'this is OK',
+            results: result.rows
+        });
+
+        closeConnection(pool, res);
+
+    } catch (error) {
+        // manejo de errores
+        console.error('Error al ejecutar la consulta:', error);
+        res.json({
+            status: 500,
+            error: true,
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
+        });
+    }
+};
+
 // exportamos las funciones
 module.exports = {
     getsUsers,
     addUsers,
     updateUsers,
-    deleteUsers
+    deleteUsers,
+    getUserUnique
 }
