@@ -322,18 +322,19 @@ async function getUserUnique(req, res) {
         from t_usuarios, t_rol
         where t_usuarios.nrol = t_rol.ncodigo
         and (t_usuarios.nprivilegio is null)
-        and t_usuarios.ncodigo = ${Number(req.results.codigo)}
+        and t_usuarios.ncodigo = $1
         ORDER BY NCODIGO`;
         // ejecutamos el query 
-        const result = await pool.query(sqlQuery);
-
+        const result = await pool.query(sqlQuery,[Number(req.results.codigo)]);
+        
         // mandamos la respuesta
         res.json({
             status: 200,
             error: false,
             des: 'ruta de usuarios conectado',
             message: 'this is OK',
-            results: result.rows
+            results: result.rows,
+            id: Number(req.results.codigo)
         });
 
         closeConnection(pool, res);
