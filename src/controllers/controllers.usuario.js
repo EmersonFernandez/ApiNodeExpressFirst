@@ -13,15 +13,6 @@ async function getsUsers(req, res) {
             return res.json({ error: 'No hay token, acceso no autorizado' });
         }
 
-        // validamos que el usuario tenga los permisos adecuados
-        if (Number(req.results.rol) != 1) {
-            return res.json({
-                status: 400,
-                error: true,
-                errorMessage: 'No tiene acceso a esta acción por motivos de privilegios'
-            })
-        }
-
         // llamamos la conexion
         const pool = await getPool();
         // cosntrución de le la consulta
