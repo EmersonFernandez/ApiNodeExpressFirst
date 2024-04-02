@@ -78,8 +78,19 @@ router.post('/upload', validarToken,upload.single('image'), async (req, res) => 
 });
 
 
-router.get('/image/:id', async (req, res) => {
+router.get('/image/:id',validarToken, async (req, res) => {
     try {
+
+        const token = req.cookies.token;
+        if (!token) {
+            return res.json(
+                {
+                    error: true,
+                    errorMessage: 'No hay token, acceso no autorizado'
+                }
+            );
+        }
+        
         const { id } = req.params;
         const { rows } = await pool.query('SELECT bydata FROM t_imagenes WHERE ncodigo = $1', [id]);
         
