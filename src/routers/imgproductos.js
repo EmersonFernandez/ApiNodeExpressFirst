@@ -90,6 +90,7 @@ router.get('/image/:id',validarToken, async (req, res) => {
                 }
             );
         }
+        const pool = await getPool();
         
         const { id } = req.params;
         const { rows } = await pool.query('SELECT bydata FROM t_imagenes WHERE ncodigo = $1', [id]);
