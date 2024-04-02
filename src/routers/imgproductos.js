@@ -100,9 +100,10 @@ router.get('/image/:id',validarToken, async (req, res) => {
             const image = rows[0].bydata;
             const mime = rows[0].vmime;
             res.writeHead(200, {
-                'Content-Type': mime, // Ajusta según el tipo de imagen que estés manejando
+                'Content-Type': `${mime}`, // Ajusta según el tipo de imagen que estés manejando
                 'Content-Length': image.length
             });
+            console.log(typeof(mime) + ' == ' + mime);
             res.end(image); 
         } else {
             res.status(404).send('Imagen no encontrada.');
