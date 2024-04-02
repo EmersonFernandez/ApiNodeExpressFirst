@@ -70,7 +70,7 @@ router.post('/upload', validarToken,upload.single('image'), async (req, res) => 
         const imageBuffer = req.file.buffer; // Accede al buffer del archivo cargado
         const { originalname, mimetype, buffer } = req.file; 
         // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
-        await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vnombre,vmime) VALUES ($1,$2,$3,$4)', [seq,buffer,mimetype,originalname]);
+        await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre) VALUES ($1,$2,$3,$4)', [seq,buffer,mimetype,originalname]);
         res.status(200).json({ message: "Imagen guardada con éxito" });
     } catch (error) {
         console.error(error);
