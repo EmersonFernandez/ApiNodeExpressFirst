@@ -9,44 +9,6 @@ const { closeConnection } = require('../funciones');
 
 const upload = multer();
 
-// const upload = multer({ dest: 'uploads/' });
-
-
-
-// router.post('/', upload.single('imagen'), async (req, res) => {
-//     try {
-//         const token = req.cookies.token;
-//         if (!token) {
-//             return res.json(
-//                 {
-//                     error: true,
-//                     errorMessage: 'No hay token, acceso no autorizado'
-//                 }
-//             );
-//         }
-
-//         const file = req.file;
-//         const nombre = req.body.nombre || file.originalname;
-
-//         // Leer el archivo cargado
-//         const datos = fs.readFileSync(file.path);
-
-//         const pool = await getPool();
-//         const resultSeq = await pool.query('SELECT COALESCE(max(NCODIGO),0) + 1 as seq FROM tx_imagen');
-//         const seq = resultSeq.rows[0].seq; 
-//         console.log(datos);
-//         await pool.query('INSERT INTO tx_imagen (ncodigo ,vnombre, bydato) VALUES ($1, $2, $3)', [seq,nombre, datos]);
-
-//         // Eliminar el archivo temporal
-//         fs.unlinkSync(file.path);
-//         console.log(file.path);
-
-//         res.send('Imagen cargada con éxito');
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error al cargar la imagen');
-//     }
-// });
 
 router.post('/upload', validarToken,upload.single('image'), async (req, res) => {
     const token = req.cookies.token;
@@ -71,7 +33,10 @@ router.post('/upload', validarToken,upload.single('image'), async (req, res) => 
         const { originalname, mimetype, buffer } = req.file; 
         // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
         await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre) VALUES ($1,$2,$3,$4)', [seq,buffer,mimetype,originalname]);
+        // cerramos la conexion
+        closeConnection(pool,res);
         res.status(200).json({ message: "Imagen guardada con éxito" });
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error al guardar la imagen" });
@@ -95,6 +60,8 @@ router.get('/image/:id',validarToken, async (req, res) => {
 
         const { id } = req.params;
         const { rows } = await pool.query('SELECT * FROM t_imagenes WHERE ncodigo = $1', [id]);
+        // cerramos la conexion
+        closeConnection(pool,res);
         
         if (rows.length > 0) {
             const image = rows[0].bydata;
@@ -103,7 +70,6 @@ router.get('/image/:id',validarToken, async (req, res) => {
                 'Content-Type': `${mime}`, // Ajusta según el tipo de imagen que estés manejando
                 'Content-Length': image.length
             });
-            console.log(typeof(mime) + ' == ' + mime);
             res.end(image); 
         } else {
             res.status(404).send('Imagen no encontrada.');
