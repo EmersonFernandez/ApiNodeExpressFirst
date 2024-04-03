@@ -50,7 +50,7 @@ Ejemplos de Data:
 }
 ```
 
-### Inicio de Sesión
+### Gestón de productos
 Para **mostrar los productos**, utiliza la ruta `/api/producto` con un método `GET`.
 
 Ejemplo para la solicitud de los productos:
