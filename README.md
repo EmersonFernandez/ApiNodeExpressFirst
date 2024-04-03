@@ -50,6 +50,7 @@ Ejemplos de Data:
 }
 ```
 > Nota
+> 
 > Se debe autenticar primero en la ***api*** para hacer todas las acciones a continuación.
 
 ### Gestón de productos
