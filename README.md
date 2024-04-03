@@ -19,7 +19,7 @@ Esta API está desplegada en Railway, permitiendo un acceso fácil y rápido. Pa
 ### Inicio de Sesión
 Para **iniciar sesión**, utiliza la ruta `/api/login` con un método `POST`. Deberás enviar un JSON con la información de las credenciales, como usuario y contraseña, el cual generará un token para el acceso de rutas y gestiones de acciones HTTP.
 
-Ejemplo de solicitud para registro:
+Ejemplo de solicitud del login:
 - Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/login`
 
 Ejemplos de Data:
@@ -48,3 +48,9 @@ Ejemplos de Data:
   "user": "maria",
   "pass": "1234"
 }
+
+### Inicio de Sesión
+Para **mostrar los productos **, utiliza la ruta `/api/producto` con un método `GET`.
+
+Ejemplo para la solicitud de los productos:
+- Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/producto`
