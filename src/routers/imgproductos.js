@@ -10,16 +10,16 @@ const { closeConnection } = require('../funciones');
 const upload = multer();
 
 
-router.post('/upload',upload.single('image'), async (req, res) => {
-    // const token = req.cookies.token;
-    // if (!token) {
-    //     return res.json(
-    //         {
-    //             error: true,
-    //             errorMessage: 'No hay token, acceso no autorizado'
-    //         }
-    //     );
-    // }
+router.post('/upload', validarToken, upload.single('image'), async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json(
+            {
+                error: true,
+                errorMessage: 'No hay token, acceso no autorizado'
+            }
+        );
+    }
 
     if (!req.file) {
         return res.json({
@@ -56,7 +56,19 @@ router.post('/upload',upload.single('image'), async (req, res) => {
 });
 
 
-router.put('/upload',upload.single('image'), async (req, res) => {
+router.put('/upload', validarToken, upload.single('image'), async (req, res) => {
+    // validación de token
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json(
+            {
+                status:400,
+                error: true,
+                errorMessage: 'No hay token, acceso no autorizado'
+            }
+        );
+    }
+    
     if (!req.file) {
         return res.json({
             status:400,
@@ -96,8 +108,21 @@ router.put('/upload',upload.single('image'), async (req, res) => {
     }
 });
 
-router.get('/image/:id', async (req, res) => {
+router.get('/image/:id', validarToken,  async (req, res) => {
     try {
+
+        // validación de token
+        const token = req.cookies.token;
+        if (!token) {
+            return res.json(
+                {
+                    status:400,
+                    error: true,
+                    errorMessage: 'No hay token, acceso no autorizado'
+                }
+            );
+        }
+
         const pool = await getPool();
 
         const { id } = req.params;
