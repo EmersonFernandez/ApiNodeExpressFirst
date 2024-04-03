@@ -10,7 +10,7 @@ const { closeConnection } = require('../funciones');
 const upload = multer();
 
 
-router.post('/upload', validarToken,upload.single('image'), async (req, res) => {
+router.post('/upload',upload.single('image'), async (req, res) => {
     const token = req.cookies.token;
     if (!token) {
         return res.json(
