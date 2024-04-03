@@ -53,6 +53,8 @@ Ejemplos de Data:
 > 
 > Se debe autenticar primero en la ***api*** para hacer todas las acciones a continuación.
 
+
+
 ### Gestón de productos
 **1**. Para ***mostrar los productos***, utiliza la ruta `/api/producto` con un método `GET`.
 
@@ -96,6 +98,8 @@ Ejemplo para la solicitud para actualizar producto:
 
 Ejemplo para la solicitud para eliminar un producto:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/producto/1`
+
+  
 
 ### Gestión de usuarios
 **1**. Para ***mostrar los usuarios*** utiliza la ruta `api/usuarios` con un método
@@ -202,6 +206,8 @@ jemplo para la solicitud de restablecer clave:
  "pass":"00122" //la nueva clave
 }
 ```
+
+
 ### Otras rutas
 - Ruta para obener los roles `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`.
 
