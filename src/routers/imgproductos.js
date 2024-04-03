@@ -29,14 +29,12 @@ router.post('/upload', validarToken,upload.single('image'), async (req, res) => 
         const pool = await getPool();
         const resultSeq = await pool.query('SELECT COALESCE(max(NCODIGO),0) + 1 as seq FROM t_imagenes');
         const seq = resultSeq.rows[0].seq; 
-        const imageBuffer = req.file.buffer; // Accede al buffer del archivo cargado
         const { originalname, mimetype, buffer } = req.file; 
         // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
         await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre) VALUES ($1,$2,$3,$4)', [seq,buffer,mimetype,originalname]);
+        res.status(200).json({ message: "Imagen guardada con éxito" });
         // cerramos la conexion
         closeConnection(pool,res);
-        res.status(200).json({ message: "Imagen guardada con éxito" });
-        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error al guardar la imagen" });
@@ -60,8 +58,6 @@ router.get('/image/:id',validarToken, async (req, res) => {
 
         const { id } = req.params;
         const { rows } = await pool.query('SELECT * FROM t_imagenes WHERE ncodigo = $1', [id]);
-        // cerramos la conexion
-        closeConnection(pool,res);
         
         if (rows.length > 0) {
             const image = rows[0].bydata;
@@ -71,6 +67,8 @@ router.get('/image/:id',validarToken, async (req, res) => {
                 'Content-Length': image.length
             });
             res.end(image); 
+            // cerramos la conexion
+        closeConnection(pool,res);
         } else {
             res.status(404).send('Imagen no encontrada.');
         }
