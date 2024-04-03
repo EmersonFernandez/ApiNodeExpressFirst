@@ -25,7 +25,7 @@ router.post('/upload', validarToken, upload.single('image'), async (req, res) =>
         return res.json({
             status:400,
             error:true,
-            message:'No se envió ningún archivo.'
+            errorMessage:'No se envió ningún archivo.'
         });
     }
 
@@ -73,7 +73,7 @@ router.put('/upload', validarToken, upload.single('image'), async (req, res) => 
         return res.json({
             status:400,
             error:true,
-            message:'No se envió ningún archivo.'
+            errorMessage:'No se envió ningún archivo.'
         });
     }
 
@@ -89,12 +89,21 @@ router.put('/upload', validarToken, upload.single('image'), async (req, res) => 
             vnombre = $3
             WHERE ncodigo_producto = $4
         `;
-        await pool.query(sqlQuery, [buffer,mimetype,originalname,codigo]);
-        res.json({ 
-            status:200,
-            error:false,
-            message: "Imagen actualizada"
-        });
+        const result = await pool.query(sqlQuery, [buffer,mimetype,originalname,codigo]);
+        if(result.rowCount > 0){
+            res.json({ 
+                status:200,
+                error:false,
+                message: "Imagen actualizada"
+            });
+        }else{
+            res.json({
+                status:400,
+                error:false,
+                message: "Debe insertar una imagen",
+                insert:true
+            })
+        }
         // cerramos la conexion
         closeConnection(pool,res);
     } catch (error) {

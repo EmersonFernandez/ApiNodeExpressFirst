@@ -225,6 +225,7 @@ async function deleteProduct(req, res) {
         const pool = await getPool();
         // ejecutamos el query
         const result = await pool.query('DELETE FROM t_productos WHERE NCODIGO = $1', [id]);
+        await pool.query('DELETE FROM t_imagenes WHERE ncodigo_producto = $1',[id]);
 
         // validamos la eliminación
         if (result.rowCount > 0) {
