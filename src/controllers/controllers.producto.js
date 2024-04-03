@@ -75,7 +75,7 @@ async function addProducts(req, res) {
         // llamamos la conexion
         const pool = await getPool();
         // obetenemos la secuencia
-        const resultSeq = await pool.query('SELECT max(NCODIGO) + 1 as seq FROM t_productos');
+        const resultSeq = await pool.query('SELECT COALESCE(max(NCODIGO),0) + 1 as seq FROM t_productos');
         // alamcenamos la secunecia en una variable
         const seq = resultSeq.rows[0].seq;
         // construimos el query 
