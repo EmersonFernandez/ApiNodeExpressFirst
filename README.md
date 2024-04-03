@@ -91,7 +91,8 @@ Ejemplo para la solicitud para actualizar producto:
 **4**. Para ***eliminar un producto*** utiliza la ruta  `api/producto/id` con un método `DELETE`. Deberia enviar un parametro `<id>` por la url.
 
 > *Nota*
- El `<id>` es un codigo unico que represta el registro que se va eliminar.
+>
+>El `<id>` es un código único que represta el registro que se va eliminar.
 
 Ejemplo para la solicitud para eliminar un producto:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/producto/1`
@@ -103,7 +104,16 @@ Ejemplo para la solicitud para eliminar un producto:
 Ejemplo para la solicitud de los usuarios:
 - Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/usuarios`
 
-**2**. Para ***añadir usuarios*** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ***usuario***.
+**2**. Para ***mostrar los usuarios*** utiliza la ruta `api/usuarios/unique` con un método`GET`.
+
+Ejemplo para la solicitud de los usuarios:
+- Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/usuarios/unique`
+
+>*Nota*
+>
+>Para obenter el usuario conectado.
+
+**3**. Para ***añadir usuarios*** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ***usuario***.
 
 > *Nota*
 >
@@ -143,11 +153,14 @@ Ejemplo para la solicitud de un nuevo usuario:
   "pass":"1234",
 }
 ```
-**3**. Para ***actualizar usuario*** utiliza la ruta `api/usuario` con un método `PUT`. Debería enviar un JSON al body con la data para actualizar el ***usuario***.
+**4**. Para ***actualizar usuario*** utiliza la ruta `api/usuario` con un método `PUT`. Debería enviar un JSON al body con la data para actualizar el ***usuario***.
 
 > *Nota*
 >
 >Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
+
+jemplo para la solicitud para actualizar un usuario:
+- Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/usuarios`
 
 ```json
 // Data ejemplo actulizar usuario
@@ -164,6 +177,34 @@ Ejemplo para la solicitud de un nuevo usuario:
 }
 ```
 > *Nota*
-> 
+>
 >El campo ***codigo*** del JSON data es el identificador del regsitro que se va realizar la actualización.
+
+**4**. Para ***eliminar un usuario*** utiliza la ruta  `api/usuarios/id` con un método `DELETE`. Deberia enviar un parametro `<id>` por la url.
+
+> *Nota*
+>
+>El `<id>` es un código único que represta el registro que se va eliminar.
+
+Ejemplo para la solicitud para eliminar un usuario:
+- Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/usuarios/1`
+
+### Restablecer Clave
+Para ***restablecer la clave*** utiliza esta ruta `api/login` con un metodo `PUT`. Deberás mandar JSON al body con la data del usuario a restablercer la clave.
+
+jemplo para la solicitud de restablecer clave:
+- Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/login`
+
+```json
+// Data ejemplo restablecer clave
+{
+ "user":"maria",  // el usuairo 
+ "pass":"00122" //la nueva clave
+}
+```
+### Otras rutas
+- Ruta para obener los roles `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`.
+
+- Ruta para obener los priviligios `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/privg`.
+
 
