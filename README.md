@@ -49,7 +49,7 @@ Ejemplos de Data:
   "pass": "1234"
 }
 ```
-> Nota
+> *Nota*
 > 
 > Se debe autenticar primero en la ***api*** para hacer todas las acciones a continuación.
 
@@ -90,7 +90,7 @@ Ejemplo para la solicitud para actualizar producto:
 ```
 **4**. Para ***eliminar un producto*** utiliza la ruta  `api/producto/id` con un método `DELETE`. Deberia enviar un parametro `<id>` por la url.
 
-> Nota
+> *Nota*
  El `<id>` es un codigo unico que represta el registro que se va eliminar.
 
 Ejemplo para la solicitud para eliminar un producto:
@@ -105,11 +105,11 @@ Ejemplo para la solicitud de los usuarios:
 
 **2**. Para ***añadir usuarios*** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ***usuario***.
 
-> Nota
+> *Nota*
 >
 >Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
 
-> Nota
+> *Nota*
 > - El campos del body ***privilegio*** del json solo resive estos datos
 > ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/privg`.
 > 
@@ -117,7 +117,7 @@ Ejemplo para la solicitud de los usuarios:
      		  2 -> Solo lectura
     		  3 -> Escritura y Actualización
     		  4 -> Solo eliminar
-> Nota
+> *Nota*
 > - El campo del body ***rol*** del json solo resive estos datos
 > ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`
 >
@@ -145,8 +145,9 @@ Ejemplo para la solicitud de un nuevo usuario:
 ```
 **3**. Para ***actualizar usuario*** utiliza la ruta `api/usuario` con un método `PUT`. Debería enviar un JSON al body con la data para actualizar el ***usuario***.
 
->Nota 1
-Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
+> *Nota*
+>
+>Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
 
 ```json
 // Data ejenplo actulizar usuario
@@ -162,6 +163,7 @@ Esta acción solo será accesible para aquellos usuarios que tenga el rol de Adm
   "codigo":2
 }
 ```
-> Nota 2
-El campo ***codigo*** del JSON data es el identificador del regsitro que se va realizar la actualización.
+> *Nota*
+> 
+>El campo ***codigo*** del JSON data es el identificador del regsitro que se va realizar la actualización.
 
