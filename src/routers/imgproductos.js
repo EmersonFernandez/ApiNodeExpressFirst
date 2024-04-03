@@ -22,7 +22,9 @@ router.post('/upload',upload.single('image'), async (req, res) => {
     }
 
     if (!req.file) {
-        return res.status(400).send('No se envió ningún archivo.');
+        return res.json({
+            message:'No se envió ningún archivo.'
+        });
     }
 
     try {
@@ -32,12 +34,12 @@ router.post('/upload',upload.single('image'), async (req, res) => {
         const { originalname, mimetype, buffer } = req.file; 
         // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
         await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre) VALUES ($1,$2,$3,$4)', [seq,buffer,mimetype,originalname]);
-        res.status(200).json({ message: "Imagen guardada con éxito" });
+        res.json({ message: "Imagen guardada con éxito" });
         // cerramos la conexion
         closeConnection(pool,res);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Error al guardar la imagen" });
+        res.json({ message: "Error al guardar la imagen" });
     }
 });
 
