@@ -98,7 +98,7 @@ async function addProducts(req, res) {
                 status: 200,
                 error: false,
                 message: 'Se guardó correctamente',
-                idProduct:resultSeq 
+                idProduct:seq 
             });
         } else {
             // si no se hizo la inserción
