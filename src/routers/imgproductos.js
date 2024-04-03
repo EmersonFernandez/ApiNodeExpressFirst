@@ -33,9 +33,10 @@ router.post('/upload',upload.single('image'), async (req, res) => {
         const pool = await getPool();
         const resultSeq = await pool.query('SELECT COALESCE(max(NCODIGO),0) + 1 as seq FROM t_imagenes');
         const seq = resultSeq.rows[0].seq; 
+        const {codigo} = req.body;
         const { originalname, mimetype, buffer } = req.file; 
         // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
-        await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre) VALUES ($1,$2,$3,$4)', [seq,buffer,mimetype,originalname]);
+        await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre,ncodigo_producto) VALUES ($1,$2,$3,$4,$5)', [seq,buffer,mimetype,originalname,codigo]);
         res.json({ 
             status:200,
             error:false,
