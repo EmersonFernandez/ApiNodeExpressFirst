@@ -150,7 +150,7 @@ Ejemplo para la solicitud de un nuevo usuario:
 >Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
 
 ```json
-// Data ejenplo actulizar usuario
+// Data ejemplo actulizar usuario
 {
   "nombres":"examplo actualizado",
   "apellidos":"examplo actualizado",
