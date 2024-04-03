@@ -50,7 +50,7 @@ Ejemplos de Data:
 }
 ```
 > Nota
-Se debe autenticar primero en la ***api*** para hacer todas las acciones a continuación.
+> Se debe autenticar primero en la ***api*** para hacer todas las acciones a continuación.
 
 ### Gestón de productos
 **1**. Para ***mostrar los productos***, utiliza la ruta `/api/producto` con un método `GET`.
