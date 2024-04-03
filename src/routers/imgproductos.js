@@ -23,6 +23,8 @@ router.post('/upload',upload.single('image'), async (req, res) => {
 
     if (!req.file) {
         return res.json({
+            status:400,
+            error:true,
             message:'No se envió ningún archivo.'
         });
     }
@@ -34,12 +36,21 @@ router.post('/upload',upload.single('image'), async (req, res) => {
         const { originalname, mimetype, buffer } = req.file; 
         // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
         await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre) VALUES ($1,$2,$3,$4)', [seq,buffer,mimetype,originalname]);
-        res.json({ message: "Imagen guardada con éxito" });
+        res.json({ 
+            status:200,
+            error:false,
+            message: "Imagen guardada con éxito"
+        });
         // cerramos la conexion
         closeConnection(pool,res);
     } catch (error) {
-        console.error(error);
-        res.json({ message: "Error al guardar la imagen" });
+        console.error('Error al ejecutar la consulta:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
+        });
     }
 });
 
@@ -72,11 +83,20 @@ router.get('/image/:id',validarToken, async (req, res) => {
             // cerramos la conexion
         closeConnection(pool,res);
         } else {
-            res.status(404).send('Imagen no encontrada.');
+            res.json({
+                status:400,
+                error:true,
+                errorMessage:'Imagen no encontrada.'
+            });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error al recuperar la imagen.');
+        console.error('Error al ejecutar la consulta:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
+        });
     }
 });
 
