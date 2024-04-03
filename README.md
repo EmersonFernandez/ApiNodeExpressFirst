@@ -100,7 +100,7 @@ Para **mostrar los usuarios** utiliza la ruta `api/usuarios` con un método
 Ejemplo para la solicitud de los usuarios:
 - Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/usuarios`
 
-Para **añadir usuarios** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ** *usuario* **.
+Para **añadir usuarios** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ***usuario***.
 >Nota
 Esta accion solo será acesesible para aquellos usuarios que tenga el rol de Administrador
 
