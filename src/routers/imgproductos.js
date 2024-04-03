@@ -56,18 +56,9 @@ router.post('/upload',upload.single('image'), async (req, res) => {
 });
 
 
-router.get('/image/:id',validarToken, async (req, res) => {
+router.get('/image/:id', async (req, res) => {
     try {
 
-        const token = req.cookies.token;
-        if (!token) {
-            return res.json(
-                {
-                    error: true,
-                    errorMessage: 'No hay token, acceso no autorizado'
-                }
-            );
-        }
         const pool = await getPool();
 
         const { id } = req.params;
