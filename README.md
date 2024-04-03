@@ -56,7 +56,7 @@ Para **mostrar los productos**, utiliza la ruta `/api/producto` con un método `
 Ejemplo para la solicitud de los productos:
 - Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/producto`
 
-Para **añadir un producto**, utiliza la ruta `api/producto` con un método `POST`. Deberías enviar un JSON al body con la data para el regsitro de los ** *productos* **.
+Para **añadir un producto**, utiliza la ruta `api/producto` con un método `POST`. Deberías enviar un JSON al body con la data para el regsitro de los ***productos***.
 
 Ejemplo para la solicitud de un nuevo producto:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/producto`
@@ -70,7 +70,7 @@ Ejemplo para la solicitud de un nuevo producto:
   "precio":4000
 }
 ```
-Para **actulizar producto** utiliza la ruta `api/producto` con un método `PUT`. Debería enviar un JSON al body con la tada para actulizar el ** *producto* **
+Para **actulizar producto** utiliza la ruta `api/producto` con un método `PUT`. Debería enviar un JSON al body con la tada para actulizar el ***producto***
 
 Ejemplo para la solicitud para actualizar producto:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/producto`
