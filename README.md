@@ -105,11 +105,11 @@ Ejemplo para la solicitud de los usuarios:
 
 **2**. Para ***añadir usuarios*** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ***usuario***.
 
->Nota
+> Nota
 >
 >Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
 
-> Nota 2
+> Nota
 > - El campos del body ***privilegio*** del json solo resive estos datos
 > ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/privg`.
 > 
@@ -117,6 +117,7 @@ Ejemplo para la solicitud de los usuarios:
      		  2 -> Solo lectura
     		  3 -> Escritura y Actualización
     		  4 -> Solo eliminar
+> Nota
 > - El campo del body ***rol*** del json solo resive estos datos
 > ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`
 >
