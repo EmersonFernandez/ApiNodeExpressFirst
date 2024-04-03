@@ -126,7 +126,7 @@ router.get('/image/:id', validarToken,  async (req, res) => {
         const pool = await getPool();
 
         const { id } = req.params;
-        const { rows } = await pool.query('SELECT * FROM t_imagenes WHERE ncodigo = $1', [id]);
+        const { rows } = await pool.query('SELECT * FROM t_imagenes WHERE ncodigo_producto = $1', [id]);
         
         if (rows.length > 0) {
             const image = rows[0].bydata;
