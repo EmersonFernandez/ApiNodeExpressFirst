@@ -119,6 +119,7 @@ Ejemplo para la solicitud de los usuarios:
     		  4 -> Solo eliminar
 > - El campo del body ***rol*** del json solo resive estos datos
 > ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`
+>
     		 1 -> Administrador
     		 2 -> Cliente
     		 3 -> Supervisor
