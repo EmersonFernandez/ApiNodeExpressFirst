@@ -16,14 +16,8 @@ SecureCommerceAPI es una API diseñada para proporcionar una plataforma segura y
 ## Uso
 Esta API está desplegada en Railway, permitiendo un acceso fácil y rápido. Para empezar a utilizarla, sigue estos pasos:
 
-
-
-
-
-
-
-
-
+<br/>
+<br/>
 ### Inicio de Sesión
 Para **iniciar sesión**, utiliza la ruta `/api/login` con un método `POST`. Deberás enviar un JSON con la información de las credenciales, como usuario y contraseña, el cual generará un token para el acceso de rutas y gestiones de acciones HTTP.
 
@@ -61,8 +55,8 @@ Ejemplos de Data:
 > 
 > Se debe autenticar primero en la ***api*** para hacer todas las acciones a continuación.
 
-
-
+<br/>
+<br/>
 ### Gestón de productos
 **1**. Para ***mostrar los productos***, utiliza la ruta `/api/producto` con un método `GET`.
 
@@ -107,7 +101,8 @@ Ejemplo para la solicitud para actualizar producto:
 Ejemplo para la solicitud para eliminar un producto:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/producto/1`
 
-  
+<br/>
+<br/>
 
 ### Gestión de usuarios
 **1**. Para ***mostrar los usuarios*** utiliza la ruta `api/usuarios` con un método
@@ -200,6 +195,9 @@ jemplo para la solicitud para actualizar un usuario:
 
 Ejemplo para la solicitud para eliminar un usuario:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/usuarios/1`
+  
+<br/>
+<br/>
 
 ### Restablecer Clave
 Para ***restablecer la clave*** utiliza esta ruta `api/login` con un metodo `PUT`. Deberás mandar JSON al body con la data del usuario a restablercer la clave.
