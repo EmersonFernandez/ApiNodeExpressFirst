@@ -113,12 +113,12 @@ Ejemplo para la solicitud de los usuarios:
 > - El campos del body ***privilegio*** del json solo resive estos datos
 > ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/privg`.
 > 
-    		 > 1 -> Todos los permisos
-     		 >  2 -> Solo lectura
-    		 > 3 -> Escritura y Actualización
-    		 >  4 -> Solo eliminar
-- El campo del body ***rol*** del json solo resive estos datos
-  ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`
+    		  1 -> Todos los permisos
+     		  2 -> Solo lectura
+    		  3 -> Escritura y Actualización
+    		  4 -> Solo eliminar
+> - El campo del body ***rol*** del json solo resive estos datos
+> ruta `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`
     		 1 -> Administrador
     		 2 -> Cliente
     		 3 -> Supervisor
