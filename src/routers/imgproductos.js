@@ -56,9 +56,48 @@ router.post('/upload',upload.single('image'), async (req, res) => {
 });
 
 
+router.put('/upload',upload.single('image'), async (req, res) => {
+    if (!req.file) {
+        return res.json({
+            status:400,
+            error:true,
+            message:'No se envió ningún archivo.'
+        });
+    }
+
+    try {
+        const pool = await getPool();
+        const {codigo} = req.body;
+        const { originalname, mimetype, buffer } = req.file; 
+        // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
+        const sqlQuery = `
+            UPDATE T_IMAGENES SET 
+            bydata = $1,
+            vmime = $2,
+            vnombre = $3
+            WHERE ncodigo_producto = $4
+        `;
+        await pool.query(sqlQuery, [buffer,mimetype,originalname,codigo]);
+        res.json({ 
+            status:200,
+            error:false,
+            message: "Imagen actualizada"
+        });
+        // cerramos la conexion
+        closeConnection(pool,res);
+    } catch (error) {
+        console.error('Error al ejecutar la consulta:', error);
+        return res.json({
+            status: 500,
+            error: true,
+            message: 'Error interno del servidor',
+            errorMesagge: error.message
+        });
+    }
+});
+
 router.get('/image/:id', async (req, res) => {
     try {
-
         const pool = await getPool();
 
         const { id } = req.params;
