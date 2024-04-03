@@ -48,6 +48,7 @@ Ejemplos de Data:
   "user": "maria",
   "pass": "1234"
 }
+```
 
 ### Inicio de Sesión
 Para **mostrar los productos **, utiliza la ruta `/api/producto` con un método `GET`.
