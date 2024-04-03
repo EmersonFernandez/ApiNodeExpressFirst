@@ -11,15 +11,15 @@ const upload = multer();
 
 
 router.post('/upload',upload.single('image'), async (req, res) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.json(
-            {
-                error: true,
-                errorMessage: 'No hay token, acceso no autorizado'
-            }
-        );
-    }
+    // const token = req.cookies.token;
+    // if (!token) {
+    //     return res.json(
+    //         {
+    //             error: true,
+    //             errorMessage: 'No hay token, acceso no autorizado'
+    //         }
+    //     );
+    // }
 
     if (!req.file) {
         return res.json({
