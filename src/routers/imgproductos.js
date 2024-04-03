@@ -35,7 +35,7 @@ router.post('/upload', validarToken, upload.single('image'), async (req, res) =>
         const seq = resultSeq.rows[0].seq; 
         const {codigo} = req.body;
         const { originalname, mimetype, buffer } = req.file; 
-        // Asume que tienes una columna de tipo BYTEA en tu tabla 'imagenes' para almacenar el archivo binario
+        const result = await pool.query('DELETE FROM t_imagenes WHERE ncodigo_producto = $1',[codigo]);
         await pool.query('INSERT INTO t_imagenes (ncodigo,bydata,vmime,vnombre,ncodigo_producto) VALUES ($1,$2,$3,$4,$5)', [seq,buffer,mimetype,originalname,codigo]);
         res.json({ 
             status:200,
