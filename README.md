@@ -105,7 +105,7 @@ Ejemplo para la solicitud de los usuarios:
 **2**. Para ***añadir usuarios*** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ***usuario***.
 
 >Nota 1
-Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
+>Esta acción solo será accesible para aquellos usuarios que tenga el rol de Administrador.
 
 > Nota 2
 - El campos del body ***privilegio*** del json solo resive estos datos
