@@ -51,7 +51,7 @@ Ejemplos de Data:
 ```
 
 ### Inicio de Sesión
-Para **mostrar los productos **, utiliza la ruta `/api/producto` con un método `GET`.
+Para **mostrar los productos**, utiliza la ruta `/api/producto` con un método `GET`.
 
 Ejemplo para la solicitud de los productos:
 - Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/producto`
