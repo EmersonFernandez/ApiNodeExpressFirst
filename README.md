@@ -16,6 +16,14 @@ SecureCommerceAPI es una API diseñada para proporcionar una plataforma segura y
 ## Uso
 Esta API está desplegada en Railway, permitiendo un acceso fácil y rápido. Para empezar a utilizarla, sigue estos pasos:
 
+
+
+
+
+
+
+
+
 ### Inicio de Sesión
 Para **iniciar sesión**, utiliza la ruta `/api/login` con un método `POST`. Deberás enviar un JSON con la información de las credenciales, como usuario y contraseña, el cual generará un token para el acceso de rutas y gestiones de acciones HTTP.
 
