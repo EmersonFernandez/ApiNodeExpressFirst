@@ -198,6 +198,25 @@ Ejemplo para la solicitud para eliminar un usuario:
 <br/>
 <br/>
 
+### Gestión de imagenes
+**1**. Para ***cargar una imagen*** utiliza la ruta `api/imgproductos/upload` con un método `POST`. Debería enviar el JSON la data del producto y por form-data la imagen.
+
+Ejemplo para la solicitud para cargar un imagen del producto:
+- Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/imgproductos/upload`
+
+- Form-data en el **Key** colocamos ***image***  de tipo ***File*** y el **Value** seleccionamos la imagen.
+
+- JSON mandamos el `<id>` del producto que queremos representar o relacionar con la imagen.
+```json
+//Data ejemplo del producto de la imagen
+{
+ "codigo":3
+}
+```
+  
+<br/>
+<br/>
+
 ### Restablecer Clave
 Para ***restablecer la clave*** utiliza esta ruta `api/login` con un metodo `PUT`. Deberás mandar JSON al body con la data del usuario a restablercer la clave.
 
