@@ -56,13 +56,13 @@ Ejemplos de Data:
 <br/>
 <br/>
 
-### Gestón de productos
+### Gestión de productos
 **1**. Para ***mostrar los productos***, utiliza la ruta `/api/producto` con un método `GET`.
 
 Ejemplo para la solicitud de los productos:
 - Endpoint: `https://apinodeexpressfirst-production.up.railway.app/api/producto`
 
-**2**. Para ***añadir un producto***, utiliza la ruta `api/producto` con un método `POST`. Deberías enviar un JSON al body con la data para el regsitro de los ***productos***.
+**2**. Para ***añadir un producto***, utiliza la ruta `api/producto` con un método `POST`. Deberías enviar un JSON al body con la data para el registro de los ***productos***.
 
 Ejemplo para la solicitud de un nuevo producto:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/producto`
@@ -76,7 +76,7 @@ Ejemplo para la solicitud de un nuevo producto:
   "precio":4000
 }
 ```
-**3**. Para ***actulizar producto*** utiliza la ruta `api/producto` con un método `PUT`. Debería enviar un JSON al body con la data para actualizar el ***producto***
+**3**. Para ***actualizar producto*** utiliza la ruta `api/producto` con un método `PUT`. Debería enviar un JSON al body con la data para actualizar el ***producto***
 
 Ejemplo para la solicitud para actualizar producto:
 - Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/producto`
@@ -117,7 +117,7 @@ Ejemplo para la solicitud de los usuarios:
 
 >*Nota*
 >
->Para obenter el usuario conectado.
+>Para obtener el usuario conectado.
 
 **3**. Para ***añadir usuarios*** utiliza la ruta `api/usuarios` con un método `POST`. Debería enviar un JSON por el body con la data del ***usuario***.
 
@@ -214,8 +214,8 @@ jemplo para la solicitud de restablecer clave:
 
 
 ### Otras rutas
-- Ruta para obener los roles `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`.
+- Ruta para obtener los roles `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/rol`.
 
-- Ruta para obener los priviligios `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/privg`.
+- Ruta para obtener los privilegios `https://apinodeexpressfirst-production.up.railway.app/api/privilegios/privg`.
 
 
