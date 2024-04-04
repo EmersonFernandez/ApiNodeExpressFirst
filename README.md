@@ -213,6 +213,14 @@ Ejemplo para la solicitud para cargar un imagen del producto:
  "codigo":3
 }
 ```
+**2**. Para ***mostrar la imagen del producto***  utiliza la ruta `api/imgproductos/image/id`con un método `GET`. Debería enviar un parametro `<id>` por la url.
+
+>*Nota*
+>
+>El `id` es`el código único del producto de la imagen.
+
+Ejemplo para la solicitud de mostrar la imagen del producto:
+- Endpoint `https://apinodeexpressfirst-production.up.railway.app/api/imgproductos/image/1`
   
 <br/>
 <br/>
