@@ -19,7 +19,16 @@ async function getsProducts(req, res) {
         }
         // llamamos la conexion
         const pool = await getPool();
-        const sqlQuery = `SELECT * FROM t_productos`;
+        const sqlQuery = `select t_productos.*,t_imagenes.vmime
+        from 
+            t_productos,
+            t_imagenes
+        where t_productos.ncodigo = t_imagenes.ncodigo_producto
+        union
+        SELECT t_productos.*, t_imagenes.vmime
+        FROM t_productos
+        LEFT JOIN t_imagenes ON t_productos.ncodigo = t_imagenes.ncodigo_producto
+        WHERE t_imagenes.ncodigo_producto IS NULL`;
         const result = await pool.query(sqlQuery);
 
         // mandamos la repuesta
