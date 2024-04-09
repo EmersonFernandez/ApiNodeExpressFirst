@@ -31,6 +31,8 @@ async function getsProducts(req, res) {
         WHERE t_imagenes.ncodigo_producto IS NULL`;
         const result = await pool.query(sqlQuery);
 
+        
+
         // mandamos la repuesta
         res.json({
             status: 200,
