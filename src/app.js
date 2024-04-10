@@ -12,7 +12,7 @@ let port = 3000 || process.env.PORT;
 
 // cors opciones
 const corsOptions = {
-    origin: 'https://appwebreact.netlify.app/',
+    origin: 'https://appwebreact.netlify.app',
     credentials: true
 };
 // const corsOptions = {
