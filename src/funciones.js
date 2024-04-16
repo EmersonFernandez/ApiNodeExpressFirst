@@ -18,7 +18,7 @@ function validarToken(req,res,next){
 
     jwt.verify(accessToken, process.env.SECRET_SENTENCE, (error, results) => {
         if (error) {
-            res.clearCookie('token');
+           // res.clearCookie('token');
             return res.json({
                 status:401,
                 error:true,
