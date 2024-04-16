@@ -185,7 +185,7 @@ async function updateUsers(req, res) {
             VDOCUMENTO = $4,
             NROL = $5,
             VUSUARIO = $6,
-            NPRIVILEGIO = $7,
+            NPRIVILEGIO = $7
             WHERE NCODIGO = $8
         `;
 
