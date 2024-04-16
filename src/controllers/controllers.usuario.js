@@ -186,7 +186,6 @@ async function updateUsers(req, res) {
             NROL = $5,
             VUSUARIO = $6,
             NPRIVILEGIO = $7,
-            BCHANGEPASSWORD = true
             WHERE NCODIGO = $8
         `;
 
@@ -204,7 +203,8 @@ async function updateUsers(req, res) {
                 try {
                     // construimos el query para actulizar la password
                     const sqlQuery = `UPDATE T_USUARIOS SET
-                                        VPASSWORD = $1
+                                        VPASSWORD = $1,
+                                        BCHANGEPASSWORD = true
                                         WHERE NCODIGO = $2`;
                     // hash de la password
                     const hashpassword = await bcrypt.hash(pass, 10);
