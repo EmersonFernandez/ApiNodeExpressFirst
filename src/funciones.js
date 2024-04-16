@@ -22,7 +22,7 @@ function validarToken(req,res,next){
             return res.json({
                 status:401,
                 error:true,
-                des: 'Acceso Denegado o Token expirado o Incorrecto',
+                message: 'Acceso Denegado o Token expirado o Incorrecto',
                 errorMessage: error
                 
             });
