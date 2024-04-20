@@ -77,7 +77,7 @@ function generateToken(usuario) {
         nombres: usuario.vnombre,
         apellidos: usuario.vapellido,
         changepassword: usuario.bchangepassword
-    }, process.env.SECRET_SENTENCE, { expiresIn: '3m' });
+    }, process.env.SECRET_SENTENCE, { expiresIn: '15m' });
     return token;
 }
 
