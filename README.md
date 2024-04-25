@@ -1,6 +1,6 @@
 # **Nombre del Proyecto**: SecureCommerceAPI
 
-SecureCommerceAPI es una API diseñada para proporcionar una plataforma segura y robusta para la gestión de usuarios, roles, y productos. Esta API ofrece una variedad de funcionalidades clave que incluyen autenticación, autorización, gestión de productos y gestión de usuarios, todo ello con un enfoque en la seguridad y la escalabilidad.
+Esta API cuenta con una conexión a una base de datos y una plataforma segura con funcionalidades de autenticación y autorización para diversos usuarios con roles y privilegios totalmente diferenciados. También incluye un apartado para la gestión de usuarios que tienen acceso a la API, así como una gestión de productos que permite listar, agregar, actualizar y eliminar utilizando los respectivos métodos HTTP.
 <br/>
 ## Tecnologías Utilizadas
 - **Express**
